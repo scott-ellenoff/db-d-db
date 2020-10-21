@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import  {Router, Location} from '@reach/router';
+import {Login} from "./views";
+import posed, { PoseGroup } from "react-pose";
 
-function App() {
+const RouteContainer = posed.div({
+  enter: { x: "0%", transition: { duration: 600 } },
+  exit: { x: "100%" },
+});
+
+const PosedRouter = ({ children }) => (
+  <Location>
+    {({ location }) => (
+      <PoseGroup>
+        <RouteContainer key={location.key}>
+          <Router location={location}>{children}</Router>
+        </RouteContainer>
+      </PoseGroup>
+    )}
+  </Location>
+);
+
+const App = () => {
+ 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <PosedRouter>
+      <Login path="/" />
+    </PosedRouter>
   );
-}
+};
+
 
 export default App;

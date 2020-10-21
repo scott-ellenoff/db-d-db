@@ -1,8 +1,6 @@
 import React from "react";
-import { Row, Spinner} from "../Views/imports";
-import github from "../static/img/github.png";
-import linkedin from "../static/img/linkedin.png";
-import Logo from "../static/img/NEGATIVO.svg";
+import { Row, Spinner} from "react-bootstrap";
+import Logo from "../static/logo.png";
 import "./styles.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -20,17 +18,9 @@ const HeaderDashboard = () => (
 
 const Footer = () => (
   <div className="_footerStyle">
-    <div>
-      <a className="_image-url" href="https://github.com/thecodeworkers" rel="noopener noreferrer"target="_blank">
-        <img className="_image" src={linkedin} alt="Linkedin" width="40"/>
-      </a>
-      <a className="_image-url"href="https://www.linkedin.com/company/the-code-workers/" rel="noopener noreferrer"target="_blank">
-        <img className="_image" src={github} alt="Github" width="32"/>
-      </a>
-    </div>
     <div id="_footerSpacing">
       <em className="__fx-devtools-hide-shortcut__">
-        Copyright © 2020 <span>The Code Workers</span>
+        Copyright © 2020 <span>Group 1</span>
         <p>All rights reserved.</p>
       </em>
     </div>

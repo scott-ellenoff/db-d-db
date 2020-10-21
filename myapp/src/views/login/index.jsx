@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row } from "bootstrap";
-import "./login_styles.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row } from "react-bootstrap";
+import "./styles.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { HeaderLogo, Footer } from "../../components/index";
 import { navigate } from "@reach/router";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { connect } from "react-redux";
-import { setStorage } from "../../utils/storageService";
 
-const LoginContainer = (props) => {
+export const Login = (props) => {
 
   const formValues = {
     id: "",
@@ -25,31 +23,13 @@ const LoginContainer = (props) => {
     if (hiddenPassword === "text") setHiddenPassword("password");
   };
 
-  const displayAlert = () => {
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 5000);
-  };
+//   const displayAlert = () => {
+//     setShowAlert(true);
+//     setTimeout(() => {
+//       setShowAlert(false);
+//     }, 5000);
+//   };
 
-  useEffect(() => {
-    if (login.error != null) displayAlert();
-  }, [login.error]);
-
-  useEffect(() => {
-    if (login.result != null) {
-      loginSuccess();
-    }
-    return () => {
-      login.result = null;
-    };
-  }, [login.result]);
-
-  const loginSuccess = () => {
-    setStorage("oauth", login.result);
-    action.loggedIn({ oauth: true });
-    navigate("/dashboard");
-  };
 
   const loginSchema = Yup.object().shape({
     id: Yup.string()
@@ -74,7 +54,8 @@ const LoginContainer = (props) => {
   });
 
   const postParams = (values, resetForm) => {
-    action.login(values);
+    // action.login(values);
+    navigate('google.com')
     resetForm({ values: "" });
   };
 
@@ -85,7 +66,7 @@ const LoginContainer = (props) => {
         <div className="_loginblock">
           <Row>
             <div className="_title-space">
-              <h3 className="_login-layout">Welcome to TCW Daily Report</h3>
+              <h3 className="_login-layout">Welcome user</h3>
             </div>
           </Row>
           <Formik
@@ -98,14 +79,14 @@ const LoginContainer = (props) => {
             {({ errors, touched }) => (
               <Form>
                 <div className="_field-spacing">
-                  <label>Username / Email</label>
+                  <label>Email</label>
                   <Field
                     className={`_form-space ${
                       errors.id && touched.id ? "_field-error" : ""
                     } `}
                     type="text"
                     name="id"
-                    placeholder="tcw2020 or example@something.com"
+                    placeholder="example@something.com"
                   ></Field>
                   {errors.id && touched.id ? (
                     <span className="_error-message">{errors.id}</span>
@@ -136,12 +117,12 @@ const LoginContainer = (props) => {
               </Form>
             )}
           </Formik>
-          <div className="_end-of-block">
+          {/* <div className="_end-of-block">
             <p>Forgot Password</p>
-          </div>
+          </div> */}
         </div>
       </Row>
-      <Row className="justify-content-md-center">
+      {/* <Row className="justify-content-md-center">
         <div className="_create-account-block">
           <div className="_create-account-space">
             <p className="_url-styles" onClick={() => navigate("/register")}>
@@ -162,11 +143,8 @@ const LoginContainer = (props) => {
         >
           {login.error !== null ? login.error.result : null}
         </p>
-      </div>
+      </div> */}
       <Footer></Footer>
     </Container>
   );
 };
-
-
-export default LoginContainer;
