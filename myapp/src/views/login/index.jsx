@@ -14,22 +14,12 @@ export const Login = (props) => {
     password: "",
   };
 
-  const [showAlert, setShowAlert] = useState(false);
-
   const [hiddenPassword, setHiddenPassword] = useState("password");
 
   const hidePassword = () => {
     if (hiddenPassword === "password") setHiddenPassword("text");
     if (hiddenPassword === "text") setHiddenPassword("password");
   };
-
-//   const displayAlert = () => {
-//     setShowAlert(true);
-//     setTimeout(() => {
-//       setShowAlert(false);
-//     }, 5000);
-//   };
-
 
   const loginSchema = Yup.object().shape({
     id: Yup.string()
@@ -102,13 +92,6 @@ export const Login = (props) => {
                     name="password"
                     placeholder="Enter password"
                   ></Field>
-                  <span
-                    className="_hide-password-login"
-                    type="text"
-                    onClick={() => hidePassword()}
-                  >
-                    {hiddenPassword === "password" ? "Show" : "Hide"}
-                  </span>
                   {errors.password && touched.password ? (
                     <span className="_error-message">{errors.password}</span>
                   ) : null}
@@ -117,33 +100,8 @@ export const Login = (props) => {
               </Form>
             )}
           </Formik>
-          {/* <div className="_end-of-block">
-            <p>Forgot Password</p>
-          </div> */}
         </div>
       </Row>
-      {/* <Row className="justify-content-md-center">
-        <div className="_create-account-block">
-          <div className="_create-account-space">
-            <p className="_url-styles" onClick={() => navigate("/register")}>
-              Create Account
-            </p>
-          </div>
-        </div>
-      </Row>
-      <div
-        className={`justify-content-md-center ${
-          showAlert ? "_show-alert-login" : "_no-show-alert-login"
-        }`}
-      >
-        <p
-          className={`justify-content-md-center ${
-            showAlert ? "_show-alert-text" : "_no-show-alert-text"
-          }`}
-        >
-          {login.error !== null ? login.error.result : null}
-        </p>
-      </div> */}
       <Footer></Footer>
     </Container>
   );
