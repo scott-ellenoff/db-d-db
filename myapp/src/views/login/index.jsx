@@ -45,7 +45,7 @@ export const Login = (props) => {
 
   const postParams = (values, resetForm) => {
     // action.login(values);
-    navigate('google.com')
+    navigate('/launch')
     resetForm({ values: "" });
   };
 

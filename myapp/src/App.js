@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import  {Router, Location} from '@reach/router';
-import {Login} from "./views";
+import {Login, LaunchPage} from "./views";
 import posed, { PoseGroup } from "react-pose";
 
 const RouteContainer = posed.div({
@@ -25,6 +25,7 @@ const App = () => {
   return (
     <PosedRouter>
       <Login path="/" />
+      <LaunchPage path='/launch' />
     </PosedRouter>
   );
 };
