@@ -57,6 +57,9 @@ def connect():
 
 #functions that routes point to
 def groupby_instrument(connection):
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
     mycursor = connection.cursor()
     sql = "select instrument.instrument_name, averages.deal_type ,averages.val from db_grad_cs_1917.instrument join " \
           "(select AVG(deal_amount) as val, deal_type, deal_instrument_id from " \
@@ -64,7 +67,6 @@ def groupby_instrument(connection):
             "= db_grad_cs_1917.instrument.instrument_id"
     mycursor.execute(sql)
     result = mycursor.fetchall()
-<<<<<<< Updated upstream
     payload = []
     content = {}
     for res in result:
@@ -77,10 +79,6 @@ def groupby_instrument(connection):
             payload.append(content)
             content = {}
     return jsonify(payload)
-=======
-    for x in result:
-        print(x)
->>>>>>> Stashed changes
 
 def historyDeals():
     mydb = mysql.connector.connect(
