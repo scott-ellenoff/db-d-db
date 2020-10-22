@@ -94,7 +94,7 @@ def endPositions():
         host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
     )
     mycursor = mydb.cursor()
-    sql = '''select totalbuys.dealer, instrument.instrument_name, totalbuys.buys
+    sql_buy = '''select totalbuys.dealer, instrument.instrument_name, totalbuys.buys
         from db_grad_cs_1917.instrument join
         (select SUM(deal.deal_quantity) as buys, counterparty.counterparty_name as dealer, deal.deal_instrument_id
         from db_grad_cs_1917.counterparty join
@@ -103,14 +103,32 @@ def endPositions():
         where deal_type = 'B'
         group by counterparty.counterparty_name, deal.deal_instrument_id) as totalbuys
         on totalbuys.deal_instrument_id = db_grad_cs_1917.instrument.instrument_id
-        order by dealer'''
-    mycursor.execute(sql)
-    headers = [str(x[0]) for x in mycursor.description]
+        order by dealer, instrument_name'''
+    sql_sell = '''select totalbuys.dealer, instrument.instrument_name, totalbuys.buys
+        from db_grad_cs_1917.instrument join
+        (select SUM(deal.deal_quantity) as buys, counterparty.counterparty_name as dealer, deal.deal_instrument_id
+        from db_grad_cs_1917.counterparty join
+        db_grad_cs_1917.deal
+        on counterparty.counterparty_id = deal.deal_counterparty_id
+        where deal_type = 'S'
+        group by counterparty.counterparty_name, deal.deal_instrument_id) as totalbuys
+        on totalbuys.deal_instrument_id = db_grad_cs_1917.instrument.instrument_id
+        order by dealer, instrument_name'''
+
+    mycursor.execute(sql_buy)
+    result_buys = mycursor.fetchall()
+    mycursor.execute(sql_sell)
+    result_sells = mycursor.fetchall()
+
     results = []
-    for result in mycursor.fetchall():
-        result = list(result)
-        result[2] = str(result[2])
+
+    headers = ["dealer", "instrument_name", "position"]
+
+    for index in range(len(result_buys)):
+        result = list(result_buys[index])
+        result[2] = str(result_buys[index][2]-result_sells[index][2])
         results.append(result)
+
     return table2Payload(results, headers)
 
 def realizedPL():
