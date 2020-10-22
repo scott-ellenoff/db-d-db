@@ -124,9 +124,9 @@ def endPositions():
 
     headers = ["dealer", "instrument_name", "position"]
 
-    for index in range(len(result_buys)):
-        result = list(result_buys[index])
-        result[2] = str(result_buys[index][2]-result_sells[index][2])
+    for i in range(len(result_buys)):
+        result = list(result_buys[i])
+        result[2] = str(result_buys[i][2]-result_sells[i][2])
         results.append(result)
 
     return table2Payload(results, headers)
