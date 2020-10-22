@@ -1,32 +1,35 @@
 import React, { useEffect } from "react";
-import  {Router, Location} from '@reach/router';
-import {Login, LaunchPage} from "./views";
+import { Router, Link } from "@reach/router";
+import { Container, Row, Navbar, Nav, Button } from "react-bootstrap";
+import { Login, LaunchPage } from "./views";
 import posed, { PoseGroup } from "react-pose";
 
-const RouteContainer = posed.div({
-  enter: { x: "0%", transition: { duration: 600 } },
-  exit: { x: "100%" },
-});
-
-const PosedRouter = ({ children }) => (
-  <Location>
-    {({ location }) => (
-      <PoseGroup>
-        <RouteContainer key={location.key}>
-          <Router location={location}>{children}</Router>
-        </RouteContainer>
-      </PoseGroup>
-    )}
-  </Location>
-);
 
 const App = () => {
- 
+
   return (
-    <PosedRouter>
-      <Login path="/" />
-      <LaunchPage path='/launch' />
-    </PosedRouter>
+    <div styles={{ width: '100vh' }}>
+      <Navbar bg="dark" variant="dark">
+        <Navbar.Brand><Link to="/login">Login</Link>{" "}
+        </Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link >History</Nav.Link>
+          <Nav.Link>Average</Nav.Link>
+          <Nav.Link>Dealer</Nav.Link>
+          <Nav.Link>Client</Nav.Link>
+        </Nav>
+      </Navbar>
+      <Router>
+      <Login path="/login" />
+    </Router>
+    </div>
+    // <>
+    // {/* <LaunchPage /> */}
+    // <Router>
+    //   <LaunchPage path="/" />
+    //   <Login path="/login" />
+    // </Router>
+    // </>
   );
 };
 

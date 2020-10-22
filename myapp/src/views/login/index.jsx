@@ -23,15 +23,13 @@ export const Login = (props) => {
 
   const loginSchema = Yup.object().shape({
     id: Yup.string()
-      .required("Please enter email or username")
+      .required("Please enter user id")
       .test(
         "id-check",
-        "Please enter a valid email address or username",
+        "Please enter a valid user id",
         function (value) {
           var id_val = false;
-          if (/^[\w]+@([\w-]+\.)+[\w-]{2,4}$/.test(value)) {
-            return !id_val;
-          } else if (/^\S+$/.test(value)) {
+          if (/^\S+$/.test(value)) {
             return !id_val;
           } else {
             return id_val;
@@ -45,13 +43,12 @@ export const Login = (props) => {
 
   const postParams = (values, resetForm) => {
     // action.login(values);
-    navigate('/launch')
+
     resetForm({ values: "" });
   };
 
   return (
-    <Container fluid className="_body">
-      <HeaderLogo></HeaderLogo>
+    <>
       <Row className="justify-content-md-center">
         <div className="_loginblock">
           <Row>
@@ -69,14 +66,14 @@ export const Login = (props) => {
             {({ errors, touched }) => (
               <Form>
                 <div className="_field-spacing">
-                  <label>Email</label>
+                  <label>User id</label>
                   <Field
                     className={`_form-space ${
                       errors.id && touched.id ? "_field-error" : ""
                     } `}
                     type="text"
                     name="id"
-                    placeholder="example@something.com"
+                    placeholder="group1"
                   ></Field>
                   {errors.id && touched.id ? (
                     <span className="_error-message">{errors.id}</span>
@@ -90,7 +87,7 @@ export const Login = (props) => {
                     } `}
                     type={hiddenPassword}
                     name="password"
-                    placeholder="Enter password"
+                    placeholder="super safe password"
                   ></Field>
                   {errors.password && touched.password ? (
                     <span className="_error-message">{errors.password}</span>
@@ -102,7 +99,6 @@ export const Login = (props) => {
           </Formik>
         </div>
       </Row>
-      <Footer></Footer>
-    </Container>
+    </>
   );
 };
