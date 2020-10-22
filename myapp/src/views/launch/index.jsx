@@ -16,6 +16,7 @@ export const LaunchPage = (props) => {
                 <Navbar.Brand href="#login">
                 </Navbar.Brand>
                 <Nav className="mr-auto">
+                    <Link to="/login">Login</Link> 
                     <Nav.Link href="#home">History</Nav.Link>
                     <Nav.Link href="#pricing">Average</Nav.Link>
                     <Nav.Link href="#features">Dealer</Nav.Link>

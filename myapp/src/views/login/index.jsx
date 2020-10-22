@@ -3,7 +3,7 @@ import { Container, Row } from "react-bootstrap";
 import "./styles.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { HeaderLogo, Footer } from "../../components/index";
-import { navigate } from "@reach/router";
+import { navigate, Redirect, Router } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { loggedIn } from "../../store/actions";
@@ -14,17 +14,20 @@ const Login = (props) => {
 
   const { loggedIn, action } = props;
 
-  const [userLogin, setUserLogin] = useState(false);
+  // const [userLogin, setUserLogin] = useState(false);
 
-  useEffect(() => {
-    if ( localStorage.getItem('loggedIn') != null) {
-      loginSuccess();
-    }
-  });
+  // useEffect(() => {
+  //   if (localStorage.getItem('loggedIn') != null) {
+  //     console.log(props)
+  //     loginSuccess();
+  //   }
+  // });
 
-  const loginSuccess = () => {
-    action.loggedIn({ oauth: true });
-  };
+  // const loginSuccess = () => {
+  //   if (localStorage.getItem('loggedIn') == null) {
+  //     action.loggedIn({ oauth: true });
+  //   }
+  // };
 
   const formValues = {
     id: "",
@@ -61,6 +64,7 @@ const Login = (props) => {
   const postParams = (values, resetForm) => {
     // action.login(values);
     localStorage.setItem('loggedIn', 'true')
+    action.loggedIn({ oauth: true });
     resetForm({ values: "" });
   };
 
@@ -85,9 +89,8 @@ const Login = (props) => {
                 <div className="_field-spacing">
                   <label>User id</label>
                   <Field
-                    className={`_form-space ${
-                      errors.id && touched.id ? "_field-error" : ""
-                    } `}
+                    className={`_form-space ${errors.id && touched.id ? "_field-error" : ""
+                      } `}
                     type="text"
                     name="id"
                     placeholder="group1"
@@ -99,9 +102,8 @@ const Login = (props) => {
                 <div className="_field-spacing _field-password">
                   <label>Password</label>
                   <Field
-                    className={`_form-space ${
-                      errors.password && touched.password ? "_field-error" : ""
-                    } `}
+                    className={`_form-space ${errors.password && touched.password ? "_field-error" : ""
+                      } `}
                     type={hiddenPassword}
                     name="password"
                     placeholder="super safe password"
@@ -135,4 +137,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
