@@ -4,10 +4,27 @@ import "./styles.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { HeaderLogo, Footer } from "../../components/index";
 import { navigate } from "@reach/router";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { loggedIn } from "../../store/actions";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
-export const Login = (props) => {
+const Login = (props) => {
+
+  const { loggedIn, action } = props;
+
+  const [userLogin, setUserLogin] = useState(false);
+
+  useEffect(() => {
+    if ( localStorage.getItem('loggedIn') != null) {
+      loginSuccess();
+    }
+  });
+
+  const loginSuccess = () => {
+    action.loggedIn({ oauth: true });
+  };
 
   const formValues = {
     id: "",
@@ -43,7 +60,7 @@ export const Login = (props) => {
 
   const postParams = (values, resetForm) => {
     // action.login(values);
-
+    localStorage.setItem('loggedIn', 'true')
     resetForm({ values: "" });
   };
 
@@ -102,3 +119,20 @@ export const Login = (props) => {
     </>
   );
 };
+
+const mapStateToProps = ({ loggedIn }) => {
+  return {
+    loggedIn,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const actions = {
+    loggedIn,
+  };
+  return {
+    action: bindActionCreators(actions, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)
