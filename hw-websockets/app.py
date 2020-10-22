@@ -89,8 +89,25 @@ def historyDeals():
     return table2Payload(results, headers)
 
 
-def endPositions(connection):
-    return
+def endPositions():
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
+    sql = '''select totalbuys.dealer, instrument.instrument_name, totalbuys.buys
+        from db_grad_cs_1917.instrument join
+        (select SUM(deal.deal_quantity) as buys, counterparty.counterparty_name as dealer, deal.deal_instrument_id
+        from db_grad_cs_1917.counterparty join
+        db_grad_cs_1917.deal
+        on counterparty.counterparty_id = deal.deal_counterparty_id
+        where deal_type = 'B'
+        group by counterparty.counterparty_name, deal.deal_instrument_id) as totalbuys
+        on totalbuys.deal_instrument_id = db_grad_cs_1917.instrument.instrument_id
+        order by dealer'''
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    headers = [str(x[0]) for x in mycursor.description]
+    return table2Payload(result, headers)
 
 def realizedPL():
     return
