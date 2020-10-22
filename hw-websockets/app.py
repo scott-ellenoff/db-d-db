@@ -1,17 +1,22 @@
 import requests
 import mysql.connector
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, request
 from flask_cors import CORS
+
 
 app = Flask(__name__)
 CORS(app)
 
 #Various routes
-@app.route('/login/<user_id>', methods = ['GET', 'POST'])
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        data = request.form
-        loginFunc(data)
+        content = request.get_json()
+        userID = content["user_id"]
+        password = content["password"]
+        print(content)
+        return loginFunc(userID, password)
+
 
 @app.route('/')
 def index():
@@ -23,7 +28,7 @@ def history():
 
 @app.route('/average')
 def average():
-    return groupby_instrument()
+    return groupby_instrument(connect())
 
 @app.route('/dealer/endpos')
 def dealerEndPositions():
@@ -48,18 +53,18 @@ def connect():
     )
     return mydb
 
+
+
 #functions that routes point to
-def groupby_instrument():
-    mydb = mysql.connector.connect(
-        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
-    )
-    mycursor = mydb.cursor()
+def groupby_instrument(connection):
+    mycursor = connection.cursor()
     sql = "select instrument.instrument_name, averages.deal_type ,averages.val from db_grad_cs_1917.instrument join " \
-          "(select AVG(deal_amount) as val, deal_type, deal_instrument_id from " \
+          "(select AVG(deal_amount)/AVG(deal_quantity) as val, deal_type, deal_instrument_id from " \
           "db_grad_cs_1917.deal group by deal_instrument_id, deal_type) as averages on averages.deal_instrument_id " \
-          "= db_grad_cs_1917.instrument.instrument_id"
+            "= db_grad_cs_1917.instrument.instrument_id"
     mycursor.execute(sql)
     result = mycursor.fetchall()
+<<<<<<< Updated upstream
     payload = []
     content = {}
     for res in result:
@@ -72,6 +77,10 @@ def groupby_instrument():
             payload.append(content)
             content = {}
     return jsonify(payload)
+=======
+    for x in result:
+        print(x)
+>>>>>>> Stashed changes
 
 def historyDeals():
     mydb = mysql.connector.connect(
@@ -89,7 +98,7 @@ def historyDeals():
     return table2Payload(results, headers)
 
 
-def endPositions(connection):
+def endPositions():
     return
 
 def realizedPL():
@@ -107,16 +116,19 @@ def table2Payload(data, headers):
         content = {}
     return jsonify(payload)
 
-def loginFunc(userID, data):
+def loginFunc(userID, password):
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
     )
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM user WHERE user.id = %s"
+    sql = "SELECT * FROM users WHERE user_id = %s"
     val = (userID, )
     mycursor.execute(sql, val)
     result = mycursor.fetchone()
     print(result)
+    if result[1] == password:
+        return Response(status = 200)
+    return Response(status = 401)
 
 #booting flask app
 
