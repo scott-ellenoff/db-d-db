@@ -3,7 +3,6 @@ import mysql.connector
 from flask import Flask, Response, jsonify
 from flask_cors import CORS
 
-
 app = Flask(__name__)
 CORS(app)
 
@@ -18,7 +17,7 @@ def history():
 
 @app.route('/average')
 def average():
-    return groupby_instrument(connect())
+    return groupby_instrument()
 
 @app.route('/dealer/endpos')
 def dealerEndPositions():
@@ -44,16 +43,29 @@ def connect():
     return mydb
 
 #functions that routes point to
-def groupby_instrument(connection):
-    mycursor = connection.cursor()
+def groupby_instrument():
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
     sql = "select instrument.instrument_name, averages.deal_type ,averages.val from db_grad_cs_1917.instrument join " \
           "(select AVG(deal_amount) as val, deal_type, deal_instrument_id from " \
           "db_grad_cs_1917.deal group by deal_instrument_id, deal_type) as averages on averages.deal_instrument_id " \
-            "= db_grad_cs_1917.instrument.instrument_id"
+          "= db_grad_cs_1917.instrument.instrument_id"
     mycursor.execute(sql)
     result = mycursor.fetchall()
-    for x in result:
-        print(x)
+    payload = []
+    content = {}
+    for res in result:
+        res = list(res)
+        if res[1] == 'B':
+            content["instrument"] = res[0]
+            content["buy_average"] = res[2]
+        else:
+            content["sell_average"] = res[2]
+            payload.append(content)
+            content = {}
+    return jsonify(payload)
 
 def historyDeals():
     mydb = mysql.connector.connect(
@@ -66,7 +78,7 @@ def historyDeals():
     return table2Payload(mycursor.fetchall(), headers)
 
 
-def endPositions():
+def endPositions(connection):
     return
 
 def realizedPL():
