@@ -66,9 +66,9 @@ def groupby_instrument():
         res = list(res)
         if res[1] == 'B':
             content["instrument"] = res[0]
-            content["buy_average"] = res[2]
+            content["buy_average"] = str(res[2])
         else:
-            content["sell_average"] = res[2]
+            content["sell_average"] = str(res[2])
             payload.append(content)
             content = {}
     return jsonify(payload)
