@@ -66,9 +66,9 @@ def groupby_instrument():
         res = list(res)
         if res[1] == 'B':
             content["instrument"] = res[0]
-            content["buy_average"] = res[2]
+            content["buy_average"] = str(res[2])
         else:
-            content["sell_average"] = res[2]
+            content["sell_average"] = str(res[2])
             payload.append(content)
             content = {}
     return jsonify(payload)
@@ -105,9 +105,13 @@ def endPositions():
         on totalbuys.deal_instrument_id = db_grad_cs_1917.instrument.instrument_id
         order by dealer'''
     mycursor.execute(sql)
-    result = mycursor.fetchall()
     headers = [str(x[0]) for x in mycursor.description]
-    return table2Payload(result, headers)
+    results = []
+    for result in mycursor.fetchall():
+        result = list(result)
+        result[2] = str(result[2])
+        results.append(result)
+    return table2Payload(results, headers)
 
 def realizedPL():
     return
