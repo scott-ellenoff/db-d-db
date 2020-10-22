@@ -59,7 +59,7 @@ def connect():
 def groupby_instrument(connection):
     mycursor = connection.cursor()
     sql = "select instrument.instrument_name, averages.deal_type ,averages.val from db_grad_cs_1917.instrument join " \
-          "(select AVG(deal_amount)/AVG(deal_quantity) as val, deal_type, deal_instrument_id from " \
+          "(select AVG(deal_amount) as val, deal_type, deal_instrument_id from " \
           "db_grad_cs_1917.deal group by deal_instrument_id, deal_type) as averages on averages.deal_instrument_id " \
             "= db_grad_cs_1917.instrument.instrument_id"
     mycursor.execute(sql)
