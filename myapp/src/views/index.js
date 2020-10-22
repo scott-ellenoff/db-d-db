@@ -1,2 +1,2 @@
 export { default as Login } from "./login";
-export { LaunchPage} from "./launch";
+export { default as LaunchPage} from "./launch";

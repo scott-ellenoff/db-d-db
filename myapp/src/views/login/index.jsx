@@ -17,17 +17,14 @@ const Login = (props) => {
   // const [userLogin, setUserLogin] = useState(false);
 
   // useEffect(() => {
-  //   if (localStorage.getItem('loggedIn') != null) {
-  //     console.log(props)
   //     loginSuccess();
-  //   }
   // });
 
-  // const loginSuccess = () => {
-  //   if (localStorage.getItem('loggedIn') == null) {
-  //     action.loggedIn({ oauth: true });
-  //   }
-  // };
+  const loginSuccess = () => {
+    if (localStorage.getItem('loggedIn') != true) {
+      action.loggedIn({ oauth: true });
+    }
+  };
 
   const formValues = {
     id: "",
@@ -64,12 +61,12 @@ const Login = (props) => {
   const postParams = (values, resetForm) => {
     // action.login(values);
     localStorage.setItem('loggedIn', 'true')
-    action.loggedIn({ oauth: true });
+    loginSuccess();
     resetForm({ values: "" });
   };
 
   return (
-    <>
+    <div>
       <Row className="justify-content-md-center">
         <div className="_loginblock">
           <Row>
@@ -118,7 +115,7 @@ const Login = (props) => {
           </Formik>
         </div>
       </Row>
-    </>
+    </div>
   );
 };
 
