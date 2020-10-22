@@ -56,10 +56,42 @@ def groupby_instrument(connection):
         print(x)
 
 def historyDeals():
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
+    sql = "SELECT * FROM deal"
+    mycursor.execute(sql)
+    headers = [str(x[0]) for x in mycursor.description]
+    return table2Payload(mycursor.fetchall(), headers)
+
 
 def endPositions():
+    return
 
 def realizedPL():
+    return
 
 def effectivePL():
+    return
+
+def table2Payload(data, headers):
+    payload = []
+    content = {}
+    for result in data:
+        result = list(result)
+        result[5] = str(result[5])
+        content = dict(zip(headers, result))
+        payload.append(content)
+        content = {}
+    return jsonify(payload)
+
+def bootapp():
+    #global rdd
+    #rdd = RandomDealData()
+    #webServiceStream.bootServices()
+    app.run(debug=True, port=8070, threaded=True, host=('0.0.0.0'))
+
+if __name__ == "__main__":
+      bootapp()
 
