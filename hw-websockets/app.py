@@ -8,6 +8,12 @@ app = Flask(__name__)
 CORS(app)
 
 #Various routes
+@app.route('/login/<user_id>', methods = ['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        data = request.form
+        loginFunc(data)
+
 @app.route('/')
 def index():
     return testService()
@@ -65,7 +71,12 @@ def historyDeals():
     sql = "SELECT * FROM deal"
     mycursor.execute(sql)
     headers = [str(x[0]) for x in mycursor.description]
-    return table2Payload(mycursor.fetchall(), headers)
+    results = []
+    for result in mycursor.fetchall():
+        result = list(result)
+        result[5] = str(result[5])
+        results.append(result)
+    return table2Payload(results, headers)
 
 
 def endPositions():
@@ -81,12 +92,23 @@ def table2Payload(data, headers):
     payload = []
     content = {}
     for result in data:
-        result = list(result)
-        result[5] = str(result[5])
         content = dict(zip(headers, result))
         payload.append(content)
         content = {}
     return jsonify(payload)
+
+def loginFunc(userID, data):
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
+    sql = "SELECT * FROM user WHERE user.id = %s"
+    val = (userID, )
+    mycursor.execute(sql, val)
+    result = mycursor.fetchone()
+    print(result)
+
+#booting flask app
 
 def bootapp():
     #global rdd
