@@ -48,9 +48,9 @@ def dataRetrieval():
         database = "db_grad_cs_1917"
     )
     mycursor = mydb.cursor()
-    dealId = 0
-    instrumentId = 0
-    cptyId = 0
+    dealId = 1000
+    instrumentId = 500
+    cptyId = 700
     for line in r.iter_lines(decode_unicode = True):
         if line != "":
             line = line[5:]
