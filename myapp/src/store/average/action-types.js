@@ -1,0 +1,2 @@
+export const GET_AVERAGE = 'GET_AVERAGE';
+export const GET_AVERAGE_ASYNC = 'GET_AVERAGE_ASYNC';
