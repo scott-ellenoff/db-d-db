@@ -1,0 +1,2 @@
+export const GET_REALIZED = 'GET_REALIZED';
+export const GET_REALIZED_ASYNC = 'GET_REALIZED_ASYNC';
