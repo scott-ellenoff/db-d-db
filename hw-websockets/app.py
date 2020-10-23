@@ -159,11 +159,15 @@ def realizedPL():
     )
     mycursor = mydb.cursor()
     # loop through this query changing ids
-    sql = 'select * from db_grad_cs_1917.deal where deal_counterparty_id = 701 and deal_instrument_id = 1001 order by deal_time'
+    dealerIds = getDealerIdList()
+    instrumentIds = getInstrumentIdList()
+    for dealer in dealerIds:
+        for instrument in instrumentIds:
+            sql = f'select * from db_grad_cs_1917.deal where deal_counterparty_id = {dealer} '\
+                  f'and deal_instrument_id = {instrument} order by deal_time'
+
     mycursor.execute(sql)
     result = mycursor.fetchall()
-    for res in result:
-        print(res)
 
 def effectivePL():
     return
