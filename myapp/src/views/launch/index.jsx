@@ -56,8 +56,6 @@ const LaunchPage = (props) => {
        if (serverActive.result == null) action.serverActive()
     }, [action])
 
-    console.log(props.serverActive.result)
-
     return wait ? (
 
         <div>
@@ -112,7 +110,7 @@ const Success = () => (
 )
 
 
-const mapStateToProps = ({ loggedIn, serverActive,getHistory }) => {
+const mapStateToProps = ({ loggedIn, serverActive, getHistory }) => {
     return {
         loggedIn,
         serverActive,

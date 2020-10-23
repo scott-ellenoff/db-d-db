@@ -6,9 +6,8 @@ import { history } from "../../utils/path";
 function* historyAsync(action) {
   try {
     const response = yield call(fetchService, history, "GET", action.payload);
-    console.log(response)
     const payloadObject = {
-      result: response.result,
+      result: response,
       error: null,
     };
     yield put({
@@ -17,7 +16,7 @@ function* historyAsync(action) {
     });
   } catch (error) {
       const payloadObject = {
-        result: error.response.data,
+        result: error.response,
         error: null,
       };
 
