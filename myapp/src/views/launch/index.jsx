@@ -8,6 +8,8 @@ import { bindActionCreators } from "redux";
 import { loggedIn } from "../../store/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Router, Link } from "@reach/router";
+import Logo from "../../static/logo.png";
+
 
 
 const LaunchPage = (props) => {
@@ -18,14 +20,19 @@ const LaunchPage = (props) => {
 
     const [navBar, setNavBar] = useState('1')
 
-
-    console.log(navBar)
-
     const activeEl = useRef(null);
 
     const handleSelect = (selectKey) => {
         setNavBar(selectKey)
     }
+
+    const signOut = () => {
+        localStorage.clear();
+        loggedIn.oauth = null;
+        console.log(props)
+        setUserLogin(false)
+    }
+
 
     useEffect(() => {
         if (loggedIn.oauth || localStorage.getItem('loggedIn')) {
@@ -39,16 +46,17 @@ const LaunchPage = (props) => {
 
         <div>
             <Navbar bg="dark" variant="dark">
-                <Navbar.Brand>
+            <Navbar.Brand>
+                    <img src={Logo} alt="Logo" className="_imageBlock" />
                 </Navbar.Brand>
-
-                {userLogin ? <Nav ref={activeEl} className="mr-auto" defaultActiveKey='#home'
+                {userLogin ? <Nav  className="mr-auto" defaultActiveKey='#home'
                     onSelect={key => handleSelect(key)}>
-                    <Nav.Link href='#home' eventKey={1} active={true}>Home</Nav.Link>
-                    <Nav.Link href='#history' eventKey={2}>History</Nav.Link>
-                    <Nav.Link href='#average' eventKey={3}>Average</Nav.Link>
-                    <Nav.Link href='#dealer' eventKey={4}>Dealer</Nav.Link>
-                    <Nav.Link href='#client' eventKey={5}>Client</Nav.Link>
+                    <Nav.Link  href='#home' eventKey={1}><span ref ={navBar == '1' ? activeEl : null}>Home</span></Nav.Link>
+                    <Nav.Link ref={navBar == '2' ? activeEl : null} href='#history' eventKey={2}>History</Nav.Link>
+                    <Nav.Link ref={navBar == '3' ? activeEl : null} href='#average' eventKey={3}>Average</Nav.Link>
+                    <Nav.Link ref={navBar == '4' ? activeEl : null} href='#dealer' eventKey={4}>Dealer</Nav.Link>
+                    <Nav.Link ref={navBar == '5' ? activeEl : null} href='#client' eventKey={5}>Client</Nav.Link>
+                    <button className={"_sign-out-button"} onClick={()=>signOut()}>Sign Out</button>
                 </Nav> : <Nav className="mr-auto">
                         <Nav.Link href='#home'><Button variant="dark" disabled>
                             <Spinner
