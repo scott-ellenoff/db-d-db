@@ -1,0 +1,27 @@
+._sign-out-button {
+    width: 7.25rem;
+    padding: 0.5rem;
+    background-color: #331ea8;
+    border: 1px solid #331ea8;
+    color: white;
+    border-radius: 12.5px;
+    transition: all 0.6s;
+    cursor: pointer;
+    margin-left: 470px;
+  }
+  
+  ._sign-out-button:hover {
+    width: 7.25rem;
+    padding: 0.5rem;
+    background-color: #331ea8c2;
+    border: 1px solid #331ea8c2;
+    color: white;
+    border-radius: 10px;
+    transition: all 0.6s;
+    cursor: pointer;
+    margin-left: 470px;
+  }
+
+  ._imageBlock {
+    width: 40px;
+  }
