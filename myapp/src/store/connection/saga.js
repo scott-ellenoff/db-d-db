@@ -11,7 +11,7 @@ function* serverAsync(action) {
       error: null,
     };
     yield put({
-      type: LOGIN_ASYNC,
+      type: SERVER_ACTIVE_ASYNC,
       payload: payloadObject,
     });
   } catch (error) {
@@ -21,7 +21,7 @@ function* serverAsync(action) {
       };
 
       yield put({
-        type: LOGIN_ASYNC,
+        type: SERVER_ACTIVE_ASYNC,
         payload: payloadObject,
       });
   }

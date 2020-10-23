@@ -2,7 +2,6 @@ import { takeLatest, call, put } from "redux-saga/effects";
 import { LOGIN, LOGIN_ASYNC } from "./action-types";
 import { fetchService } from "../../utils";
 import { login } from "../../utils/path";
-import { navigate } from "@reach/router";
 
 function* loginAsync(action) {
   try {
