@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Navbar, Nav, Button, Spinner, Jumbotron } from "react-bootstrap";
+import { Navbar, Nav, Button, Spinner, Jumbotron, Popover } from "react-bootstrap";
 import { default as Login } from '../login';
 import "./styles.css";
 import { connect } from "react-redux";
@@ -20,7 +20,9 @@ const LaunchPage = (props) => {
 
     const [userLogin, setUserLogin] = useState(false);
 
-    const [wait, setWait] = useState(false);
+    const [wait, setWait] = useState(true);
+
+    const [alert, setAlert] = useState(true)
 
     const [navBar, setNavBar] = useState('1')
 
@@ -29,6 +31,10 @@ const LaunchPage = (props) => {
     const handleSelect = (selectKey) => {
         setNavBar(selectKey)
     }
+
+    useEffect(()=> {
+        setTimeout(()=>{ setAlert(false) }, 3000);
+    })
 
     const signOut = () => {
         localStorage.clear();
@@ -79,7 +85,7 @@ const LaunchPage = (props) => {
             navBar == '2' ? <DataStream />:
             navBar == "3" ? <AvgTable /> :
             navBar == '4' ? <Dealer /> :
-            navBar == "5" ? <ClientTable /> : null : <Login />}
+            navBar == "5" ? <ClientTable /> : null : alert ? <Login /> : <Login />}
         </div>
     ) : <LoadingScreen />;
 };
@@ -96,6 +102,22 @@ const Success = () => (
         </Jumbotron>
     </div>
 )
+
+// const SuccesPop = () => (
+//     <div
+//     className={`justify-content-md-center ${
+//       showSuccess ? "_show-success" : "_no-show-success"
+//     }`}
+//   >
+//     <p
+//       className={`justify-content-md-center ${
+//         showSuccess ? "_show-alert-text" : "_no-show-alert-text"
+//       }`}
+//     >
+//       {registration.result !== null ? registration.result : null}
+//     </p>
+//   </div>
+// );
 
 
 const mapStateToProps = ({ loggedIn }) => {
