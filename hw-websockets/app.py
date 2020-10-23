@@ -245,7 +245,7 @@ def effectivePL():
                 average_open_price = bp
             else:
                 average_open_price = sp
-            unrealized_pl = (fill_prices[instrument] - average_open_price) * open_position
+            unrealized_pl += (fill_prices[instrument] - average_open_price) * open_position
         output.append({"dealer": dealer[1],
                        "unrealizedPL": unrealized_pl})
     final = []
