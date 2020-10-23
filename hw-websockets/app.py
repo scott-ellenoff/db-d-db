@@ -153,21 +153,43 @@ def getDealerIdList():
     lst = [x[0] for x in result]
     return lst
 
+def calc(deal_data):
+    buy_quantity = 0
+    avg_buy_price = 0
+    sell_quantity = 0
+    avg_sell_price = 0
+    for deal in deal_data:
+        deal = list(deal)
+        if deal[4] == 'S':
+            sell_quantity += deal[6]
+            avg_sell_price += deal[5] * deal[6]
+        else:
+            buy_quantity += deal[6]
+            avg_buy_price += deal[5] * deal[6]
+    avg_sell_price = avg_sell_price / sell_quantity
+    avg_buy_price = avg_buy_price / buy_quantity
+    return (buy_quantity, sell_quantity, avg_buy_price, avg_sell_price)
+
 def realizedPL():
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
     )
     mycursor = mydb.cursor()
-    # loop through this query changing ids
     dealerIds = getDealerIdList()
     instrumentIds = getInstrumentIdList()
     for dealer in dealerIds:
+        pl = 0
         for instrument in instrumentIds:
             sql = f'select * from db_grad_cs_1917.deal where deal_counterparty_id = {dealer} '\
                   f'and deal_instrument_id = {instrument} order by deal_time'
-
-    mycursor.execute(sql)
-    result = mycursor.fetchall()
+            mycursor.execute(sql)
+            result = mycursor.fetchall()
+            bq, sq, bp, sp = calc(result)
+            if bq > sq:
+                pl += (sp-bp) * sq
+            else:
+                pl += (sp-bp) * bq
+    return
 
 def effectivePL():
     return
