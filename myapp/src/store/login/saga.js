@@ -6,7 +6,9 @@ import { navigate } from "@reach/router";
 
 function* loginAsync(action) {
   try {
-    const response = yield call(fetchService, login, "POST", action.payload);
+    const user_id = localStorage.getItem('user_id')
+    const path = `${login}/${user_id}`
+    const response = yield call(fetchService, path, "POST", action.payload);
     const payloadObject = {
       result: response.result,
       error: null,
@@ -16,18 +18,15 @@ function* loginAsync(action) {
       payload: payloadObject,
     });
   } catch (error) {
-    if (error.response === undefined) navigate("/error500");
-    else {
       const payloadObject = {
-        result: null,
-        error: error.response.data,
+        result: error.response.data,
+        error: null,
       };
 
       yield put({
         type: LOGIN_ASYNC,
         payload: payloadObject,
       });
-    }
   }
 }
 
