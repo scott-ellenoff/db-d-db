@@ -2,6 +2,7 @@ import requests
 import mysql.connector
 from flask import Flask, Response, jsonify
 from flask_cors import CORS
+import decimal
 
 
 app = Flask(__name__)
@@ -27,7 +28,7 @@ def history():
 
 @app.route("/average")
 def average():
-    return groupby_instrument(connect())
+    return groupby_instrument()
 
 
 @app.route("/dealer/endpos")
@@ -37,12 +38,12 @@ def dealerEndPositions():
 
 @app.route("/dealer/realized_pl")
 def dealerRealizedPL():
-    return realizedPL()
+    return jsonify(realizedPL())
 
 
 @app.route("/dealer/effective_pl")
 def dealerEffectivePL():
-    return effectivePL()
+    return jsonify(effectivePL())
 
 
 @app.route("/client/testservice")
@@ -72,18 +73,11 @@ def groupby_instrument():
     )
     mycursor.execute(sql)
     result = mycursor.fetchall()
-    payload = []
-    content = {}
-    for res in result:
-        res = list(res)
-        if res[1] == "B":
-            content["instrument"] = res[0]
-            content["buy_average"] = str(res[2])
-        else:
-            content["sell_average"] = str(res[2])
-            payload.append(content)
-            content = {}
-    return jsonify(payload)
+    lst = [list(x) for x in result]
+    for x in lst:
+        x[2] = str(round(x[2], 2))
+    payload = table2Payload(lst, ["instrument", "type", "average"])
+    return payload
 
 
 def historyDeals():
@@ -94,7 +88,11 @@ def historyDeals():
     sql = "SELECT * FROM deal"
     mycursor.execute(sql)
     headers = [str(x[0]) for x in mycursor.description]
-    return table2Payload(mycursor.fetchall(), headers)
+    result = mycursor.fetchall()
+    lst = [list(x) for x in result]
+    for x in lst:
+        x[5] = str(round(x[5], 2))
+    return table2Payload(lst, headers)
 
 
 def endPositions():
@@ -204,11 +202,60 @@ def realizedPL():
             else:
                 pl += (sp - bp) * bq
         output.append({"dealer": dealer[1], "realizedPL": str(round(pl, 2))})
-    return jsonify(output)
+    return output
 
+
+def getFillPrices():
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
+    sql = 'select fill.deal_instrument_id, MAX(deal_amount) from db_grad_cs_1917.deal ' \
+    'join (select MAX(deal_time) as latest, deal_instrument_id from db_grad_cs_1917.deal ' \
+    'group by deal_instrument_id) fill on fill.deal_instrument_id = deal.deal_instrument_id ' \
+    'and fill.latest = deal.deal_time group by fill.deal_instrument_id'
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    fill_prices = {x[0]:x[1] for x in result}
+    return fill_prices
 
 def effectivePL():
-    return
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
+    dealerIds = getDealerList()
+    instrumentIds = getInstrumentIdList()
+    fill_prices = getFillPrices()
+    output = []
+
+    for dealer in dealerIds:
+        unrealized_pl = 0
+        for instrument in instrumentIds:
+            sql = (
+                f"select * from db_grad_cs_1917.deal where deal_counterparty_id = {dealer[0]} "
+                f"and deal_instrument_id = {instrument} order by deal_time"
+            )
+            mycursor.execute(sql)
+            result = mycursor.fetchall()
+            bq, sq, bp, sp = extract(result)
+            open_position = bq - sq
+            average_open_price = 0
+            if open_position > 0:
+                average_open_price = bp
+            else:
+                average_open_price = sp
+            unrealized_pl = (fill_prices[instrument] - average_open_price) * open_position
+        output.append({"dealer": dealer[1],
+                       "unrealizedPL": unrealized_pl})
+    final = []
+    realized_output = realizedPL()
+    for i in range(len(output)):
+        final.append({"dealer": output[i]['dealer'],
+                      "effectivePL": str(round(
+                          output[i]["unrealizedPL"] + decimal.Decimal(realized_output[i]["realizedPL"]), 2))
+                      })
+    return(final)
 
 
 def table2Payload(data, headers):
@@ -216,7 +263,7 @@ def table2Payload(data, headers):
     content = {}
     for result in data:
         result = list(result)
-        result[5] = str(result[5])
+        #result[5] = str(result[5])
         content = dict(zip(headers, result))
         payload.append(content)
         content = {}
