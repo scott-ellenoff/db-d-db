@@ -8,7 +8,7 @@ app = Flask(__name__)
 CORS(app)
 
 #Various routes
-@app.route('/login', methods = ['GET', 'POST'])
+@app.route('/login', methods = ['POST'])
 def login():
     if request.method == 'POST':
         content = request.get_json()
@@ -24,7 +24,9 @@ def index():
 
 @app.route('/history')
 def history():
-    return historyDeals()
+    x = historyDeals()
+    print(x)
+    return x
 
 @app.route('/average')
 def average():
@@ -34,7 +36,7 @@ def average():
 def dealerEndPositions():
     return endPositions()
 
-@app.route('/dealer/realizer_pl')
+@app.route('/dealer/realized_pl')
 def dealerRealizedPL():
     return realizedPL()
 
@@ -85,7 +87,7 @@ def historyDeals():
         host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
     )
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM deal"
+    sql = "SELECT * FROM deal LIMIT 100"
     mycursor.execute(sql)
     headers = [str(x[0]) for x in mycursor.description]
     results = []
@@ -134,7 +136,7 @@ def bootapp():
     #global rdd
     #rdd = RandomDealData()
     #webServiceStream.bootServices()
-    app.run(debug=True, port=8070, threaded=True, host=('0.0.0.0'))
+    app.run(debug=True, port=5000, threaded=True, host=('0.0.0.0'))
 
 if __name__ == "__main__":
       bootapp()
