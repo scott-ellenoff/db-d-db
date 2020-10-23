@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Row, Navbar, Nav, Button, Spinner, Jumbotron } from "react-bootstrap";
-import { Table } from '@material-ui/core';
 import { default as Login } from '../login';
 import "./styles.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { loggedIn } from "../../store/actions";
+import { loggedIn, serverActive } from "../../store/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Router, Link } from "@reach/router";
 import Logo from "../../static/logo.png";
@@ -14,7 +13,7 @@ import Logo from "../../static/logo.png";
 
 const LaunchPage = (props) => {
 
-    const { loggedIn, action } = props;
+    const { loggedIn, action, serverActive } = props;
 
     const [userLogin, setUserLogin] = useState(false);
 
@@ -92,12 +91,14 @@ const Success = () => (
 const mapStateToProps = ({ loggedIn }) => {
     return {
         loggedIn,
+        serverActive
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     const actions = {
         loggedIn,
+        serverActive
     };
     return {
         action: bindActionCreators(actions, dispatch),
