@@ -1,19 +1,24 @@
 import requests
 import mysql.connector
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, request
 from flask_cors import CORS
 import decimal
+
 
 
 app = Flask(__name__)
 CORS(app)
 
-# Various routes
-@app.route("/login/<user_id>", methods=["GET", "POST"])
+#Various routes
+@app.route('/login', methods = ['POST'])
 def login():
-    if request.method == "POST":
-        data = request.form
-        loginFunc(data)
+    if request.method == 'POST':
+        content = request.get_json()
+        userID = content["user_id"]
+        password = content["password"]
+        print(content)
+        return loginFunc(userID, password)
+
 
 
 @app.route("/")
@@ -23,20 +28,21 @@ def index():
 
 @app.route("/history")
 def history():
-    return historyDeals()
+    x = historyDeals()
+    print(x)
+    return x
 
 
 @app.route("/average")
 def average():
-    return groupby_instrument()
+    return groupby_instrument(connect())
 
 
 @app.route("/dealer/endpos")
 def dealerEndPositions():
     return endPositions()
 
-
-@app.route("/dealer/realized_pl")
+@app.route('/dealer/realized_pl')
 def dealerRealizedPL():
     return jsonify(realizedPL())
 
@@ -85,7 +91,7 @@ def historyDeals():
         host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
     )
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM deal"
+    sql = "SELECT * FROM deal LIMIT 10"
     mycursor.execute(sql)
     headers = [str(x[0]) for x in mycursor.description]
     result = mycursor.fetchall()
@@ -269,27 +275,29 @@ def table2Payload(data, headers):
         content = {}
     return jsonify(payload)
 
-
-def loginFunc(userID, data):
+def loginFunc(userID, password):
     mydb = mysql.connector.connect(
         host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
     )
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM user WHERE user.id = %s"
-    val = (userID,)
+    sql = "SELECT * FROM users WHERE user_id = %s"
+    val = (userID, )
     mycursor.execute(sql, val)
     result = mycursor.fetchone()
     print(result)
+    if result[1] == password:
+        return Response(status = 200)
+    return Response(status = 401)
 
 
 # booting flask app
 
 
 def bootapp():
-    # global rdd
-    # rdd = RandomDealData()
-    # webServiceStream.bootServices()
-    app.run(debug=True, port=8070, threaded=True, host=("0.0.0.0"))
+    #global rdd
+    #rdd = RandomDealData()
+    #webServiceStream.bootServices()
+    app.run(debug=True, port=5000, threaded=True, host=('0.0.0.0'))
 
 
 if __name__ == "__main__":
