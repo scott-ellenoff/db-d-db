@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import "./styles.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { navigate, Redirect, Router } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { loggedIn } from "../../store/actions";
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
+import { getAverage } from "../../store/actions";
 
-function AvgTable() {
+const AvgTable = (props) =>{
+
+    const {action, getAverage} = props
+
     return (
     <Table striped bordered hover>
         <thead>
@@ -31,4 +31,19 @@ function AvgTable() {
     );
 }
 
-export default AvgTable
+const mapStateToProps = ({ getAverage }) => {
+    return {
+        getAverage,
+    };
+  };
+  
+  const mapDispatchToProps = (dispatch) => {
+    const actions = {
+        getAverage,
+    };
+    return {
+      action: bindActionCreators(actions, dispatch),
+    };
+  };
+
+export default connect(mapStateToProps, mapDispatchToProps)(AvgTable);

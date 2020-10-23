@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { navigate, Redirect, Router } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { loggedIn } from "../../store/actions";
+import { getEndPosition, getEffective, getRealized } from "../../store/actions";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
@@ -75,9 +75,27 @@ function EffectivePL() {
 }
 
 const Dealer = (props) => {
+
+  const {action, getEffective, getEndPosition, getRealized} = props
+
   return (
     <><DealerName /><RealisedPL /><EffectivePL /></>
   )
 }
 
-export default Dealer
+const mapStateToProps = ({ getEffective, getEndPosition, getRealized }) => {
+  return {
+    getEffective, getEndPosition, getRealized
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const actions = {
+    getEffective, getEndPosition, getRealized
+  };
+  return {
+    action: bindActionCreators(actions, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dealer);
