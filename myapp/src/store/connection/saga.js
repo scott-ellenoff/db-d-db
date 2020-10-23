@@ -1,14 +1,11 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { LOGIN, LOGIN_ASYNC } from "./action-types";
+import { SERVER_ACTIVE, SERVER_ACTIVE_ASYNC } from "./action-types";
 import { fetchService } from "../../utils";
-import { login } from "../../utils/path";
-import { navigate } from "@reach/router";
+import { server } from "../../utils/path";
 
-function* loginAsync(action) {
+function* serverAsync(action) {
   try {
-    const user_id = localStorage.getItem('user_id')
-    const path = `${login}/${user_id}`
-    const response = yield call(fetchService, path, "POST", action.payload);
+    const response = yield call(fetchService, server, "GET", action.payload);
     const payloadObject = {
       result: response.result,
       error: null,
@@ -30,6 +27,6 @@ function* loginAsync(action) {
   }
 }
 
-export function* watchLoginAsync() {
-  yield takeLatest(LOGIN, loginAsync);
+export function* watchServerAsync() {
+  yield takeLatest(SERVER_ACTIVE, serverAsync);
 }

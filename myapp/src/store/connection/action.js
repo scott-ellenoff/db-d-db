@@ -1,7 +1,7 @@
-import {LOGIN} from './action-types'
-export const login = (credentials) => {
+import {SERVER_ACTIVE} from './action-types'
+export const serverActive = (data) => {
     return {
-        type: LOGIN,
-        payload: credentials
+        type: SERVER_ACTIVE,
+        payload: data
     }
 }

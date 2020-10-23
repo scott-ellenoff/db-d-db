@@ -1,2 +1,2 @@
-export const LOGIN = 'LOGIN';
-export const LOGIN_ASYNC = 'LOGIN_ASYNC';
+export const SERVER_ACTIVE = 'SERVER_ACTIVE';
+export const SERVER_ACTIVE_ASYNC = 'SERVER_ACTIVE_ASYNC';
