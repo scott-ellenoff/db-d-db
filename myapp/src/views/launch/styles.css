@@ -25,3 +25,14 @@
   ._imageBlock {
     width: 40px;
   }
+
+  ._succes-container{
+    height: 100vh; 
+    background-color: #3B73CE;
+  }
+
+  ._success-block{
+    max-width: 800px; 
+    margin-left: auto; 
+    margin-right:auto;
+  }

@@ -52,7 +52,7 @@ const Login = (props) => {
   };
 
   return (
-    <div style={{'backgroundColor': '#3B73CE', 'height': '100vh'}}>
+    <div className="_body">
       <Row className="justify-content-md-center">
         <div className="_loginblock">
           <Row>

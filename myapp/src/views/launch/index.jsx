@@ -46,7 +46,7 @@ const LaunchPage = (props) => {
 
         <div>
             <Navbar bg="dark" variant="dark">
-            <Navbar.Brand>
+                <Navbar.Brand>
                     <img src={Logo} alt="Logo" className="_imageBlock" />
                 </Navbar.Brand>
                 {userLogin ? <Nav  className="mr-auto" defaultActiveKey='#home'
@@ -77,9 +77,9 @@ const LaunchPage = (props) => {
 
 
 const Success = () => (
-    <div style={{ 'height': '100vh', 'backgroundColor': '#3B73CE' }}>
+    <div className="_succes-container">
         <br />
-        <Jumbotron style={{'maxWidth': '800px', 'marginLeft': 'auto', 'marginRight':'auto' }}>
+        <Jumbotron className="_success-block">
             <h1>Hello, user id</h1>
             <p>
                 You can know select on the multiple tabs to view your deals, historical data and positions
@@ -88,13 +88,6 @@ const Success = () => (
     </div>
 )
 
-const LoadingScreen = () => (
-    <div className="_body">
-        <Spinner animation="border" role="status" className="_spinner-styles">
-            <span className="sr-only">Loading...</span>
-        </Spinner>
-    </div>
-)
 
 const mapStateToProps = ({ loggedIn }) => {
     return {
