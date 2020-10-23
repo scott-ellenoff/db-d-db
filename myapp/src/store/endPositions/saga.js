@@ -1,19 +1,17 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { LOGIN, LOGIN_ASYNC } from "./action-types";
+import { GET_END_POSITIONS, GET_END_POSITIONS_ASYNC } from "./action-types";
 import { fetchService } from "../../utils";
-import { login } from "../../utils/path";
+import { endpos } from "../../utils/path";
 
-function* loginAsync(action) {
+function* endPosAsync(action) {
   try {
-    const user_id = localStorage.getItem('user_id')
-    const path = `${login}/${user_id}`
-    const response = yield call(fetchService, path, "POST", action.payload);
+    const response = yield call(fetchService, endpos, "GET", action.payload);
     const payloadObject = {
       result: response.result,
       error: null,
     };
     yield put({
-      type: LOGIN_ASYNC,
+      type: GET_END_POSITIONS_ASYNC,
       payload: payloadObject,
     });
   } catch (error) {
@@ -23,12 +21,12 @@ function* loginAsync(action) {
       };
 
       yield put({
-        type: LOGIN_ASYNC,
+        type: GET_END_POSITIONS_ASYNC,
         payload: payloadObject,
       });
   }
 }
 
-export function* watchLoginAsync() {
-  yield takeLatest(LOGIN, loginAsync);
+export function* watchEndPosAsync() {
+  yield takeLatest(GET_END_POSITIONS, endPosAsync);
 }

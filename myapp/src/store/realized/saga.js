@@ -1,17 +1,17 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { GET_EFFECTIVE, GET_EFFECTIVE_ASYNC } from "./action-types";
+import { GET_REALIZED, GET_REALIZED_ASYNC } from "./action-types";
 import { fetchService } from "../../utils";
-import { effective } from "../../utils/path";
+import { realized } from "../../utils/path";
 
-function* getEffectiveAsync(action) {
+function* getRealizedAsync(action) {
   try {
-    const response = yield call(fetchService, effective, "GET", action.payload);
+    const response = yield call(fetchService, realized, "GET", action.payload);
     const payloadObject = {
       result: response.result,
       error: null,
     };
     yield put({
-      type: GET_EFFECTIVE_ASYNC,
+      type: GET_REALIZED_ASYNC,
       payload: payloadObject,
     });
   } catch (error) {
@@ -21,12 +21,12 @@ function* getEffectiveAsync(action) {
       };
 
       yield put({
-        type: GET_EFFECTIVE_ASYNC,
+        type: GET_REALIZED_ASYNC,
         payload: payloadObject,
       });
   }
 }
 
-export function* watchEffectiveAsync() {
-  yield takeLatest(GET_EFFECTIVE, getEffectiveAsync);
+export function* watchRealizedAsync() {
+  yield takeLatest(GET_REALIZED, getRealizedAsync);
 }

@@ -1,4 +1,4 @@
-import { GET_EFFECTIVE_ASYNC } from "./action-types";
+import { GET_REALIZED_ASYNC } from "./action-types";
 
 const initialState = {
   result: null,
@@ -7,7 +7,7 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case GET_EFFECTIVE_ASYNC:
+    case GET_REALIZED_ASYNC:
       return { ...state, ...payload };
 
     default:

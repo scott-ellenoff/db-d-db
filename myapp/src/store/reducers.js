@@ -4,6 +4,8 @@ import login from "./login/reducer";
 import serverActive from "./connection/reducer";
 import getAverage from "./average/reducer";
 import getEffective from "./effective/reducer"
+import getEndPosition from "./endPositions/reducer";
+import getRealized from "./realized/reducer";
 
 
 
@@ -12,7 +14,9 @@ const reducers = combineReducers({
   loggedIn,
   serverActive,
   getAverage,
-  getEffective
+  getEffective,
+  getEndPosition,
+  getRealized
 });
 
 export default reducers;
