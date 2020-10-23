@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { navigate, Redirect, Router } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { loggedIn } from "../../store/actions";
+import { loggedIn, login } from "../../store/actions";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 
@@ -105,15 +105,15 @@ const Login = (props) => {
   );
 };
 
-const mapStateToProps = ({ loggedIn }) => {
+const mapStateToProps = ({ loggedIn, login }) => {
   return {
-    loggedIn,
+    loggedIn, login
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   const actions = {
-    loggedIn,
+    loggedIn, login
   };
   return {
     action: bindActionCreators(actions, dispatch),

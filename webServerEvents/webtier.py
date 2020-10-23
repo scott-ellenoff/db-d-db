@@ -12,8 +12,9 @@ CORS(app)
 @app.route('/login', methods = ['POST'])
 def login():
     if request.method == 'POST':
-        content = requests.post('http://127.0.0.1:5001/login', data = request.get_json()).json()
-        return jsonify(content)
+        content = request.get_json()
+        content = requests.post('http://127.0.0.1:5001/login', json = content)
+        return Response(status = content.status_code)
 
 @app.route('/history')
 def history():

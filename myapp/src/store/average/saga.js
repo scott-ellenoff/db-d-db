@@ -6,6 +6,7 @@ import { average } from "../../utils/path";
 function* getAverageAsync(action) {
   try {
     const response = yield call(fetchService, average, "GET", action.payload);
+    console.log(response)
     const payloadObject = {
       result: response.result,
       error: null,
