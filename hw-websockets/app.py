@@ -3,16 +3,11 @@ import mysql.connector
 from flask import Flask, Response, jsonify
 from flask_cors import CORS
 
+
 app = Flask(__name__)
 CORS(app)
 
 #Various routes
-@app.route('/login/<user_id>', methods = ['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        data = request.form
-        loginFunc(data)
-
 @app.route('/')
 def index():
     return testService()
@@ -23,7 +18,7 @@ def history():
 
 @app.route('/average')
 def average():
-    return groupby_instrument()
+    return groupby_instrument(connect())
 
 @app.route('/dealer/endpos')
 def dealerEndPositions():
@@ -48,30 +43,19 @@ def connect():
     )
     return mydb
 
+
+
 #functions that routes point to
-def groupby_instrument():
-    mydb = mysql.connector.connect(
-        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
-    )
-    mycursor = mydb.cursor()
+def groupby_instrument(connection):
+    mycursor = connection.cursor()
     sql = "select instrument.instrument_name, averages.deal_type ,averages.val from db_grad_cs_1917.instrument join " \
-          "(select AVG(deal_amount) as val, deal_type, deal_instrument_id from " \
+          "(select AVG(deal_amount)/AVG(deal_quantity) as val, deal_type, deal_instrument_id from " \
           "db_grad_cs_1917.deal group by deal_instrument_id, deal_type) as averages on averages.deal_instrument_id " \
-          "= db_grad_cs_1917.instrument.instrument_id"
+            "= db_grad_cs_1917.instrument.instrument_id"
     mycursor.execute(sql)
     result = mycursor.fetchall()
-    payload = []
-    content = {}
-    for res in result:
-        res = list(res)
-        if res[1] == 'B':
-            content["instrument"] = res[0]
-            content["buy_average"] = str(res[2])
-        else:
-            content["sell_average"] = str(res[2])
-            payload.append(content)
-            content = {}
-    return jsonify(payload)
+    for x in result:
+        print(x)
 
 def historyDeals():
     mydb = mysql.connector.connect(
@@ -81,66 +65,11 @@ def historyDeals():
     sql = "SELECT * FROM deal"
     mycursor.execute(sql)
     headers = [str(x[0]) for x in mycursor.description]
-    results = []
-    for result in mycursor.fetchall():
-        result = list(result)
-        result[5] = str(result[5])
-        results.append(result)
-    return table2Payload(results, headers)
+    return table2Payload(mycursor.fetchall(), headers)
 
 
 def endPositions():
-    mydb = mysql.connector.connect(
-        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
-    )
-    mycursor = mydb.cursor()
-    sql_buy = '''select totalbuys.dealer, instrument.instrument_name, totalbuys.buys
-        from db_grad_cs_1917.instrument join
-        (select SUM(deal.deal_quantity) as buys, counterparty.counterparty_name as dealer, deal.deal_instrument_id
-        from db_grad_cs_1917.counterparty join
-        db_grad_cs_1917.deal
-        on counterparty.counterparty_id = deal.deal_counterparty_id
-        where deal_type = 'B'
-        group by counterparty.counterparty_name, deal.deal_instrument_id) as totalbuys
-        on totalbuys.deal_instrument_id = db_grad_cs_1917.instrument.instrument_id
-        order by dealer, instrument_name'''
-    sql_sell = '''select totalbuys.dealer, instrument.instrument_name, totalbuys.buys
-        from db_grad_cs_1917.instrument join
-        (select SUM(deal.deal_quantity) as buys, counterparty.counterparty_name as dealer, deal.deal_instrument_id
-        from db_grad_cs_1917.counterparty join
-        db_grad_cs_1917.deal
-        on counterparty.counterparty_id = deal.deal_counterparty_id
-        where deal_type = 'S'
-        group by counterparty.counterparty_name, deal.deal_instrument_id) as totalbuys
-        on totalbuys.deal_instrument_id = db_grad_cs_1917.instrument.instrument_id
-        order by dealer, instrument_name'''
-
-    mycursor.execute(sql_buy)
-    result_buys = mycursor.fetchall()
-    mycursor.execute(sql_sell)
-    result_sells = mycursor.fetchall()
-
-    results = []
-
-    headers = ["dealer", "instrument_name", "position"]
-
-    for i in range(len(result_buys)):
-        result = list(result_buys[i])
-        result[2] = str(result_buys[i][2]-result_sells[i][2])
-        results.append(result)
-
-    return table2Payload(results, headers)
-
-def getInstrumentIdList():
-    mydb = mysql.connector.connect(
-        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
-    )
-    mycursor = mydb.cursor()
-    sql = 'select instrument_id from db_grad_cs_1917.instrument'
-    mycursor.execute(sql)
-    result = mycursor.fetchall()
-    lst = [x[0] for x in result]
-    return lst
+    return
 
 def getDealerIdList():
     mydb = mysql.connector.connect(
@@ -153,7 +82,7 @@ def getDealerIdList():
     lst = [x[0] for x in result]
     return lst
 
-def calc(deal_data):
+def extract(deal_data):
     buy_quantity = 0
     avg_buy_price = 0
     sell_quantity = 0
@@ -184,7 +113,7 @@ def realizedPL():
                   f'and deal_instrument_id = {instrument} order by deal_time'
             mycursor.execute(sql)
             result = mycursor.fetchall()
-            bq, sq, bp, sp = calc(result)
+            bq, sq, bp, sp = extract(result)
             if bq > sq:
                 pl += (sp-bp) * sq
             else:
@@ -198,6 +127,8 @@ def table2Payload(data, headers):
     payload = []
     content = {}
     for result in data:
+        result = list(result)
+        result[5] = str(result[5])
         content = dict(zip(headers, result))
         payload.append(content)
         content = {}
