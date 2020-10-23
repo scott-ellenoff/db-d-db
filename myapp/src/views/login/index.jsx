@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import "./styles.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { HeaderLogo, Footer } from "../../components/index";
 import { navigate, Redirect, Router } from "@reach/router";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -13,12 +12,6 @@ import * as Yup from "yup";
 const Login = (props) => {
 
   const { loggedIn, action } = props;
-
-  // const [userLogin, setUserLogin] = useState(false);
-
-  // useEffect(() => {
-  //     loginSuccess();
-  // });
 
   const loginSuccess = () => {
       localStorage.setItem('loggedIn', 'true')
@@ -31,12 +24,6 @@ const Login = (props) => {
     password: "",
   };
 
-  const [hiddenPassword, setHiddenPassword] = useState("password");
-
-  const hidePassword = () => {
-    if (hiddenPassword === "password") setHiddenPassword("text");
-    if (hiddenPassword === "text") setHiddenPassword("password");
-  };
 
   const loginSchema = Yup.object().shape({
     id: Yup.string()
@@ -100,7 +87,7 @@ const Login = (props) => {
                   <Field
                     className={`_form-space ${errors.password && touched.password ? "_field-error" : ""
                       } `}
-                    type={hiddenPassword}
+                    type="password"
                     name="password"
                     placeholder="super safe password"
                   ></Field>
