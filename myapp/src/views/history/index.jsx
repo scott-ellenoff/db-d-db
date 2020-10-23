@@ -3,7 +3,7 @@ import { Container, Row, Table } from "react-bootstrap";
 import { useObservable } from 'rxjs-hooks';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
-import login from '../../utils/path';
+import {login} from '../../utils/path';
 
 const stringObservable = Observable.create(observer => {
   const source = new EventSource(login);
