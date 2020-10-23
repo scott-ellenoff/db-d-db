@@ -131,8 +131,39 @@ def endPositions():
 
     return table2Payload(results, headers)
 
+def getInstrumentIdList():
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
+    sql = 'select instrument_id from db_grad_cs_1917.instrument'
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    lst = [x[0] for x in result]
+    return lst
+
+def getDealerIdList():
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
+    sql = 'select counterparty_id from db_grad_cs_1917.counterparty'
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    lst = [x[0] for x in result]
+    return lst
+
 def realizedPL():
-    return
+    mydb = mysql.connector.connect(
+        host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
+    )
+    mycursor = mydb.cursor()
+    # loop through this query changing ids
+    sql = 'select * from db_grad_cs_1917.deal where deal_counterparty_id = 701 and deal_instrument_id = 1001 order by deal_time'
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+    for res in result:
+        print(res)
 
 def effectivePL():
     return
