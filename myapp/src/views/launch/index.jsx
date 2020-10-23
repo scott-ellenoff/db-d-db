@@ -4,7 +4,7 @@ import { default as Login } from '../login';
 import "./styles.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { loggedIn, serverActive } from "../../store/actions";
+import { loggedIn, serverActive, getHistory } from "../../store/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Logo from "../../static/logo.png";
 import {default as AvgTable} from "../average"
@@ -16,7 +16,7 @@ import {default as LoadingScreen} from "../../components/index";
 
 const LaunchPage = (props) => {
 
-    const { loggedIn, action, serverActive } = props;
+    const { loggedIn, action, serverActive, getHistory } = props;
 
     const [userLogin, setUserLogin] = useState(false);
 
@@ -123,14 +123,16 @@ const Success = () => (
 const mapStateToProps = ({ loggedIn }) => {
     return {
         loggedIn,
-        serverActive
+        serverActive,
+        getHistory
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     const actions = {
         loggedIn,
-        serverActive
+        serverActive,
+        getHistory
     };
     return {
         action: bindActionCreators(actions, dispatch),

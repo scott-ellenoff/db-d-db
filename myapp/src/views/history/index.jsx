@@ -1,37 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Table } from "react-bootstrap";
 import { useObservable } from 'rxjs-hooks';
 import { Observable } from 'rxjs';
 import { map, withLatestFrom } from 'rxjs/operators';
-import {login} from '../../utils/path';
+import {history} from '../../utils/path';
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { getHistory } from "../../store/actions";
 
-const stringObservable = Observable.create(observer => {
-  const source = new EventSource(login);
-  source.addEventListener('message', (messageEvent) => {
-    console.log(messageEvent);
-    observer.next(messageEvent.data);
-  }, false);
-});
+const DataStream = (props) =>{
 
-const DataStream = () =>{
-  const [stringArray, setStringArray] = useState([]);
+  const { getHistory, action } = props;
 
-  useObservable(
-    state =>
-      stringObservable.pipe(
-        withLatestFrom(state),
-        map(([state]) => {
-          let updatedStringArray = stringArray;
-          updatedStringArray.unshift(state);
-          if (updatedStringArray.length >= 50) {
-            updatedStringArray.pop();
-          }
-          setStringArray(updatedStringArray);
-          return state;
-        })
-      )
-  );
 
+  useEffect(() => {
+    action.getHistory();
+  })
+
+  console.log(props)
   return (
 
     <>
@@ -61,9 +47,23 @@ const DataStream = () =>{
 
         </tbody>
     </Table>
-      {stringArray ? stringArray.map((message, index) => <p key={index}>{message}</p>) : <p>Loading...</p>}
     </>
   );
 }
 
-export default DataStream
+const mapStateToProps = ({ getHistory }) => {
+  return {
+    getHistory
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  const actions = {
+    getHistory
+  };
+  return {
+    action: bindActionCreators(actions, dispatch),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DataStream)

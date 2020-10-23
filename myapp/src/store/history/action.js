@@ -1,7 +1,7 @@
-import {LOGIN} from './action-types'
-export const login = (credentials) => {
+import {GET_HISTORY} from './action-types'
+export const getHistory = (credentials) => {
     return {
-        type: LOGIN,
+        type: getHistory,
         payload: credentials
     }
 }

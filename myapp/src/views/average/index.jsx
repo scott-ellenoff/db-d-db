@@ -16,7 +16,7 @@ const AvgTable = (props) =>{
     }
 )
 
-    return getAverage.result != null ? (
+    return  (
     <Table striped bordered hover>
         <thead>
             <tr>
@@ -34,7 +34,7 @@ const AvgTable = (props) =>{
 
         </tbody>
     </Table>
-    ) : <LoadingScreen />;
+    );
 }
 
 const mapStateToProps = ({ getAverage }) => {

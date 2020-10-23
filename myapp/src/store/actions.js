@@ -5,6 +5,8 @@ export * from './average/action';
 export * from './effective/action';
 export * from './endPositions/action';
 export * from './realized/action';
+export * from './history/action';
+
 
 
 

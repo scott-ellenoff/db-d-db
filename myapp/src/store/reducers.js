@@ -6,6 +6,7 @@ import getAverage from "./average/reducer";
 import getEffective from "./effective/reducer"
 import getEndPosition from "./endPositions/reducer";
 import getRealized from "./realized/reducer";
+import getHistory from "./history/reducer";
 
 
 
@@ -16,7 +17,8 @@ const reducers = combineReducers({
   getAverage,
   getEffective,
   getEndPosition,
-  getRealized
+  getRealized,
+  getHistory
 });
 
 export default reducers;

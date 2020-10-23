@@ -4,6 +4,7 @@ import { watchAverageAsync } from "./average/saga";
 import { watchEffectiveAsync } from "./effective/saga";
 import { watchEndPosAsync } from "./endPositions/saga";
 import {watchRealizedAsync} from "./realized/saga"
+import {watchHistoryAsync} from "./history/saga";
 import { all, fork } from "redux-saga/effects";
 
 export default function* () {
@@ -13,6 +14,7 @@ export default function* () {
     fork(watchAverageAsync),
     fork(watchEffectiveAsync),
     fork(watchEndPosAsync),
-    fork(watchRealizedAsync)
+    fork(watchRealizedAsync),
+    fork(watchHistoryAsync)
   ]);
 }

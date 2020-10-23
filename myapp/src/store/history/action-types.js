@@ -1,2 +1,2 @@
-export const GET_AVERAGE = 'GET_AVERAGE';
-export const GET_AVERAGE_ASYNC = 'GET_AVERAGE_ASYNC';
+export const GET_HISTORY = 'GET_HISTORY';
+export const GET_HISTORY_ASYNC = 'GET_HISTORY_ASYNC';
