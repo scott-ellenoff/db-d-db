@@ -7,14 +7,7 @@
 <body>
   <h1>Flask-SSE Quickstart</h1>
   <script>
-    var source = new EventSource("http://192.168.99.100:5000/streamTest/sse");
-    source.addEventListener('message', function(event) {
-        var data = JSON.parse(event.data);
-        $("#fromServer").append( "<p>" + JSON.stringify(data) + "</p>" );
-    }, false);
-    source.addEventListener('error', function(event) {
-        console.log("The stream has finished or the server is not running");
-    }, false);
+    window.location = 'http://127.0.0.1:3000';
   </script>
   <p id="fromServer"></p>
 </body>

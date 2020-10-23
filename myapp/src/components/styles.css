@@ -1,0 +1,13 @@
+._loading {
+    height: 100vh;
+    background-color: #3B73CE;
+  }
+
+._spinner-styles {
+    position: absolute;
+    top: 30%;
+    left: 45%;
+    width: 10rem;
+    height: 10rem;
+    color: white;
+  }

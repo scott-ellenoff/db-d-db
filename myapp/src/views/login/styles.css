@@ -1,0 +1,249 @@
+._body {
+    height: 100vh;
+    background-color: #3B73CE;
+  }
+  
+  ._loginblock {
+    width: 38.125rem;
+    max-width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.9);
+    margin-top: 20px;
+  }
+  
+  ._title-space {
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 0.9375rem;
+  }
+  
+  ._login-layout {
+    margin: 2px 0 10px;
+    text-align: center;
+  }
+  
+  ._button-submit {
+    width: 7.25rem;
+    padding: 0.5rem;
+    background-color: #735fed;
+    border: 1px solid #735fed;
+    color: white;
+    border-radius: 12.5px;
+    transition: all 0.6s;
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+    cursor: pointer;
+  }
+  
+  ._button-submit:hover {
+    width: 7.25rem;
+    padding: 0.5rem;
+    background-color: #a89fff;
+    border: 1px solid #a89fff;
+    color: white;
+    border-radius: 10px;
+    transition: all 0.6s;
+  }
+  
+  ._tabs-parent {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 0.9375rem;
+  }
+  
+  ._tabs-child-user-true {
+    padding: 0.5rem 1rem;
+    background-color: #211f2d;
+    border: 1px solid #211f2d;
+    color: white;
+    border-radius: 12.5px;
+    transition: all 0.6s;
+    text-align: center;
+    transition: all 0.6s;
+    cursor: pointer;
+  }
+  
+  ._tabs-child-user-false {
+    padding: 0.5rem 1rem;
+    background-color: #735fed;
+    border: 1px solid #735fed;
+    color: white;
+    border-radius: 12.5px;
+    transition: all 0.6s;
+    text-align: center;
+    transition: all 0.6s;
+    cursor: pointer;
+  }
+  
+  ._tabs-child-email-true {
+    padding: 0.5rem 1rem;
+    background-color: #211f2d;
+    border: 1px solid #211f2d;
+    color: white;
+    border-radius: 12.5px;
+    transition: all 0.6s;
+    text-align: center;
+    margin-left: 5px;
+    transition: all 0.6s;
+    cursor: pointer;
+  }
+  
+  ._tabs-child-email-false {
+    padding: 0.5rem 1rem;
+    background-color: #735fed;
+    border: 1px solid #735fed;
+    color: white;
+    border-radius: 12.5px;
+    transition: all 0.6s;
+    text-align: center;
+    margin-left: 5px;
+    transition: all 0.6s;
+    cursor: pointer;
+  }
+  
+  ._end-of-block {
+    text-align: center;
+    margin-top: 15px;
+  }
+  
+  ._create-account-block {
+    width: 38.125rem;
+    max-width: 50%;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.9);
+  }
+  
+  ._create-account-space {
+    text-align: center;
+  }
+  
+  ._footerStyle {
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 120px;
+    width: 100%;
+    font-size: 12px;
+    color: #808080;
+    font-weight: normal;
+    text-align: center;
+    line-height: 150%;
+    margin: 0 !important;
+    border-collapse: collapse;
+  }
+  
+  ._url-styles {
+    cursor: pointer;
+  }
+  
+  ._url-styles:hover {
+    color: #735fed;
+  }
+  
+  ._form-space {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  }
+  
+  ._field-error {
+      border: 1px solid #ff7675;
+  }
+  
+  ._field-spacing {
+    height: 86px;
+    margin-bottom: 0px !important;
+  }
+  
+  ._error-message {
+    font-size: 10px;
+    color: red;
+  }
+  
+  ._show-alert-text {
+    text-align: left;
+    opacity: 1;
+    transition: all 0.6s;
+  }
+  
+  ._show-alert-login {
+    position: absolute;
+    background-color: #dd94b5;
+    border-radius: 15px;
+    border: 1px solid #dd94b5;
+    padding: 10px;
+    visibility: visible;
+    transition: all 0.6s;
+    transform: scale(1);
+    z-index: 999;
+    left: 31.5%;
+    top: 500px;
+  }
+  
+  ._no-show-alert-login {
+    visibility: hidden;
+    padding: 10px;
+    transition: all 0.6s;
+    position: absolute;
+    transform: scale(0.7);
+    left: 31.5%;
+    top: 500px;
+  }
+  
+  ._no-show-alert-text {
+    opacity: 0;
+    text-align: left;
+    transition: all 0.3s;
+  }
+  
+  .lds-spinner {
+    color: official;
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-spinner div {
+    transform-origin: 40px 40px;
+    animation: lds-spinner 1.2s linear infinite;
+  }
+  .lds-spinner div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+  }
+  
+  ._hide-password-login{
+    cursor: pointer;
+    position: absolute;
+    bottom: 30px;
+    height: 24px;
+    right: 4px;
+    background-color: #735fed;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: .8em;
+    outline: none;
+  };
