@@ -1,41 +1,83 @@
-import React, { useState } from 'react';
-import { useObservable } from 'rxjs-hooks';
-import { Observable } from 'rxjs';
-import { map, withLatestFrom } from 'rxjs/operators';
-import login from '../../utils/path';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Table } from "react-bootstrap";
+import "./styles.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { navigate, Redirect, Router } from "@reach/router";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { loggedIn } from "../../store/actions";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
 
-const stringObservable = Observable.create(observer => {
-  const source = new EventSource(login);
-  source.addEventListener('message', (messageEvent) => {
-    console.log(messageEvent);
-    observer.next(messageEvent.data);
-  }, false);
-});
 
-const DataStream = () =>{
-  const [stringArray, setStringArray] = useState([]);
+  function DealerName() {
+    return (
+      <Table striped bordered hover>
+        <thead>
+            <tr>
+                <th>Dealer</th>
+                <th>End Position</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>test</td>
+                <td>test</td>
+            </tr>
 
-  useObservable(
-    state =>
-      stringObservable.pipe(
-        withLatestFrom(state),
-        map(([state]) => {
-          let updatedStringArray = stringArray;
-          updatedStringArray.unshift(state);
-          if (updatedStringArray.length >= 50) {
-            updatedStringArray.pop();
-          }
-          setStringArray(updatedStringArray);
-          return state;
-        })
-      )
-  );
+        </tbody>
+    </Table>
+    );
+}
 
+function RealisedPL() {
   return (
-    <>
-      {stringArray ? stringArray.map((message, index) => <p key={index}>{message}</p>) : <p>Loading...</p>}
-    </>
+  <Table striped bordered hover>
+      <thead>
+          <tr>
+            <th>Dealer</th>
+            <th>Realised Profit</th>
+            <th>Realised Loss</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>test</td>
+              <td>test</td>
+              <td>test</td>
+          </tr>
+
+      </tbody>
+  </Table>
   );
 }
 
-export default DataStream;
+function EffectivePL() {
+  return (
+  <Table striped bordered hover>
+      <thead>
+          <tr>
+              <td>Dealer</td>
+              <th>Effective Profit</th>
+              <td>Effective Loss</td>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td>test</td>
+              <td>test</td>
+              <td>test</td>
+          </tr>
+
+      </tbody>
+  </Table>
+  );
+}
+
+const Dealer = (props) => {
+  return (
+    <><DealerName /><RealisedPL /><EffectivePL /></>
+  )
+}
+
+export default Dealer

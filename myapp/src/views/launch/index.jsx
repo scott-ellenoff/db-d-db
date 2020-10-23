@@ -8,7 +8,10 @@ import { loggedIn, serverActive } from "../../store/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Router, Link } from "@reach/router";
 import Logo from "../../static/logo.png";
-
+import {default as AvgTable} from "../average"
+import {default as ClientTable} from "../client"
+import {default as Dealer} from "../dealer"
+import {default as DataStream} from "../history"
 
 
 const LaunchPage = (props) => {
@@ -69,7 +72,12 @@ const LaunchPage = (props) => {
                             </Button></Nav.Link>
                     </Nav>}
             </Navbar>
-            { loggedIn.oauth || localStorage.getItem('loggedIn') ? navBar == '1' ? <Success /> : null : <Login />}
+            { loggedIn.oauth || localStorage.getItem('loggedIn') ? 
+            navBar == '1' ? <Success /> : 
+            navBar == '2' ? <DataStream />:
+            navBar == "3" ? <AvgTable /> :
+            navBar == '4' ? <Dealer /> :
+            navBar == "5" ? <ClientTable /> : null : <Login />}
         </div>
     );
 };
