@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table } from "react-bootstrap";
+import {default as LoadingScreen} from "../../components/index";
 import "./styles.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { connect } from "react-redux";
@@ -10,7 +11,12 @@ const AvgTable = (props) =>{
 
     const {action, getAverage} = props
 
-    return (
+    useEffect(()=>{
+        if (getAverage.result == null) action.getAverage()
+    }
+)
+
+    return getAverage.result != null ? (
     <Table striped bordered hover>
         <thead>
             <tr>
@@ -28,7 +34,7 @@ const AvgTable = (props) =>{
 
         </tbody>
     </Table>
-    );
+    ) : <LoadingScreen />;
 }
 
 const mapStateToProps = ({ getAverage }) => {
