@@ -21,9 +21,9 @@ const Login = (props) => {
   // });
 
   const loginSuccess = () => {
-    if (localStorage.getItem('loggedIn') != true) {
+      localStorage.setItem('loggedIn', 'true')
       action.loggedIn({ oauth: true });
-    }
+
   };
 
   const formValues = {
@@ -60,13 +60,12 @@ const Login = (props) => {
 
   const postParams = (values, resetForm) => {
     // action.login(values);
-    localStorage.setItem('loggedIn', 'true')
     loginSuccess();
     resetForm({ values: "" });
   };
 
   return (
-    <div>
+    <div style={{'backgroundColor': '#3B73CE', 'height': '100vh'}}>
       <Row className="justify-content-md-center">
         <div className="_loginblock">
           <Row>
