@@ -61,14 +61,14 @@ const LaunchPage = (props) => {
                 </Navbar.Brand>
                 {userLogin ? <Nav  className="mr-auto" defaultActiveKey='#home'
                     onSelect={key => handleSelect(key)}>
-                    <Nav.Link  href='#home' eventKey={1}><span ref ={navBar == '1' ? activeEl : null}>Home</span></Nav.Link>
-                    <Nav.Link ref={navBar == '2' ? activeEl : null} href='#history' eventKey={2}>History</Nav.Link>
-                    <Nav.Link ref={navBar == '3' ? activeEl : null} href='#average' eventKey={3}>Average</Nav.Link>
-                    <Nav.Link ref={navBar == '4' ? activeEl : null} href='#dealer' eventKey={4}>Dealer</Nav.Link>
-                    <Nav.Link ref={navBar == '5' ? activeEl : null} href='#client' eventKey={5}>Client</Nav.Link>
+                    <Nav.Link   eventKey={1}><span ref ={navBar == '1' ? activeEl : null}>Home</span></Nav.Link>
+                    <Nav.Link ref={navBar == '2' ? activeEl : null}  eventKey={2}>History</Nav.Link>
+                    <Nav.Link ref={navBar == '3' ? activeEl : null}  eventKey={3}>Average</Nav.Link>
+                    <Nav.Link ref={navBar == '4' ? activeEl : null}  eventKey={4}>Dealer</Nav.Link>
+                    <Nav.Link ref={navBar == '5' ? activeEl : null}  eventKey={5}>Client</Nav.Link>
                     <button className={"_sign-out-button"} onClick={()=>signOut()}>Sign Out</button>
                 </Nav> : <Nav className="mr-auto">
-                        <Nav.Link href='#home'><Button variant="dark" disabled>
+                        <Nav.Link ><Button variant="dark" disabled>
                             <Spinner
                                 as="span"
                                 animation="grow"

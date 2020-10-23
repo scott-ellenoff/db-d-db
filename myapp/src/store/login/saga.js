@@ -5,9 +5,9 @@ import { login } from "../../utils/path";
 
 function* loginAsync(action) {
   try {
-    const user_id = localStorage.getItem('user_id')
-    const path = `${login}/${user_id}`
-    const response = yield call(fetchService, path, "POST", action.payload);
+    // const user_id = localStorage.getItem('user_id')
+    // const path = `${login}${user_id}`
+    const response = yield call(fetchService, login, "POST", action.payload);
     const payloadObject = {
       result: response.result,
       error: null,

@@ -11,7 +11,7 @@ import * as Yup from "yup";
 
 const Login = (props) => {
 
-  const { loggedIn, action } = props;
+  const { loggedIn, login, action } = props;
 
   const loginSuccess = () => {
       localStorage.setItem('loggedIn', 'true')
@@ -20,13 +20,13 @@ const Login = (props) => {
   };
 
   const formValues = {
-    id: "",
+    user_id: "",
     password: "",
   };
 
 
   const loginSchema = Yup.object().shape({
-    id: Yup.string()
+    user_id: Yup.string()
       .required("Please enter user id")
       .test(
         "id-check",
@@ -46,7 +46,8 @@ const Login = (props) => {
   });
 
   const postParams = (values, resetForm) => {
-    // action.login(values);
+    localStorage.setItem('user_id', values.id)
+    action.login(values);
     loginSuccess();
     resetForm({ values: "" });
   };
@@ -72,14 +73,14 @@ const Login = (props) => {
                 <div className="_field-spacing">
                   <label>User id</label>
                   <Field
-                    className={`_form-space ${errors.id && touched.id ? "_field-error" : ""
+                    className={`_form-space ${errors.user_id && touched.user_id ? "_field-error" : ""
                       } `}
                     type="text"
-                    name="id"
+                    name="user_id"
                     placeholder="group1"
                   ></Field>
-                  {errors.id && touched.id ? (
-                    <span className="_error-message">{errors.id}</span>
+                  {errors.user_id && touched.user_id ? (
+                    <span className="_error-message">{errors.user_id}</span>
                   ) : null}
                 </div>
                 <div className="_field-spacing _field-password">
