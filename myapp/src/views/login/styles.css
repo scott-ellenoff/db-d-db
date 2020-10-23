@@ -6,12 +6,11 @@
   ._loginblock {
     width: 38.125rem;
     max-width: 50%;
-    /* border-radius: 12.5px; */
     padding: 10px;
     box-sizing: border-box;
     background-color: rgba(255, 255, 255, 0.9);
     background: rgba(255, 255, 255, 0.9);
-    margin-bottom: 1px;
+    margin-top: 20px;
   }
   
   ._title-space {

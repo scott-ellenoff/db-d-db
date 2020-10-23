@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Navbar, Nav, Button } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from 'react';
+import { Container, Row, Navbar, Nav, Button, Spinner, Jumbotron } from "react-bootstrap";
 import { Table } from '@material-ui/core';
 import { default as Login } from '../login';
 import "./styles.css";
@@ -16,8 +16,23 @@ const LaunchPage = (props) => {
 
     const [userLogin, setUserLogin] = useState(false);
 
-    useEffect(() => {    
-    if (loggedIn.oauth) setUserLogin(true)
+    const [navBar, setNavBar] = useState('1')
+
+
+    console.log(navBar)
+
+    const activeEl = useRef(null);
+
+    const handleSelect = (selectKey) => {
+        setNavBar(selectKey)
+    }
+
+    useEffect(() => {
+        if (loggedIn.oauth || localStorage.getItem('loggedIn')) {
+            setUserLogin(true)
+            localStorage.setItem('oauth', loggedIn.oauth)
+        }
+
     }, [loggedIn]);
 
     return (
@@ -26,31 +41,66 @@ const LaunchPage = (props) => {
             <Navbar bg="dark" variant="dark">
                 <Navbar.Brand>
                 </Navbar.Brand>
-                {userLogin ? <Nav className="mr-auto">
-                    <Nav.Link >History</Nav.Link>
-                    <Nav.Link>Average</Nav.Link>
-                    <Nav.Link>Dealer</Nav.Link>
-                    <Nav.Link>Client</Nav.Link>
-                </Nav> : <Nav.Link>Waiting to login....</Nav.Link>}
+
+                {userLogin ? <Nav ref={activeEl} className="mr-auto" defaultActiveKey='#home'
+                    onSelect={key => handleSelect(key)}>
+                    <Nav.Link href='#home' eventKey={1} active={true}>Home</Nav.Link>
+                    <Nav.Link href='#history' eventKey={2}>History</Nav.Link>
+                    <Nav.Link href='#average' eventKey={3}>Average</Nav.Link>
+                    <Nav.Link href='#dealer' eventKey={4}>Dealer</Nav.Link>
+                    <Nav.Link href='#client' eventKey={5}>Client</Nav.Link>
+                </Nav> : <Nav className="mr-auto">
+                        <Nav.Link href='#home'><Button variant="dark" disabled>
+                            <Spinner
+                                as="span"
+                                animation="grow"
+                                size="sm"
+                                role="status"
+                                aria-hidden="true"
+                            />
+                                Waiting to login...
+                            </Button></Nav.Link>
+                    </Nav>}
             </Navbar>
-            <Login />
+            { loggedIn.oauth || localStorage.getItem('loggedIn') ? navBar == '1' ? <Success /> : null : <Login />}
         </div>
     );
-}; 
+};
+
+
+const Success = () => (
+    <div style={{ 'height': '100vh', 'backgroundColor': '#3B73CE' }}>
+        <br />
+        <Jumbotron style={{'maxWidth': '800px', 'marginLeft': 'auto', 'marginRight':'auto' }}>
+            <h1>Hello, user id</h1>
+            <p>
+                You can know select on the multiple tabs to view your deals, historical data and positions
+  </p>
+        </Jumbotron>
+    </div>
+)
+
+const LoadingScreen = () => (
+    <div className="_body">
+        <Spinner animation="border" role="status" className="_spinner-styles">
+            <span className="sr-only">Loading...</span>
+        </Spinner>
+    </div>
+)
 
 const mapStateToProps = ({ loggedIn }) => {
     return {
-      loggedIn,
+        loggedIn,
     };
-  };
-  
-  const mapDispatchToProps = (dispatch) => {
+};
+
+const mapDispatchToProps = (dispatch) => {
     const actions = {
-      loggedIn,
+        loggedIn,
     };
     return {
-      action: bindActionCreators(actions, dispatch),
+        action: bindActionCreators(actions, dispatch),
     };
-  };
-  
-  export default connect(mapStateToProps, mapDispatchToProps)(LaunchPage)
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LaunchPage)
