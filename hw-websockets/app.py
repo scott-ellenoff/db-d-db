@@ -87,7 +87,7 @@ def historyDeals():
         host="localhost", user="root", password="ppp", database="db_grad_cs_1917"
     )
     mycursor = mydb.cursor()
-    sql = "SELECT * FROM deal LIMIT 100"
+    sql = "SELECT * FROM deal LIMIT 10"
     mycursor.execute(sql)
     headers = [str(x[0]) for x in mycursor.description]
     results = []

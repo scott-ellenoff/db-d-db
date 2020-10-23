@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request
+from flask import Flask, render_template, Response, request, jsonify
 from flask_sse import sse
 from flask_cors import CORS
 import requests
@@ -12,35 +12,34 @@ CORS(app)
 @app.route('/login', methods = ['POST'])
 def login():
     if request.method == 'POST':
-        content = requests.post('http://127.0.0.1:5001/login', data = request.get_json())
-        print(content)
-        return content
+        content = requests.post('http://127.0.0.1:5001/login', data = request.get_json()).json()
+        return jsonify(content)
 
 @app.route('/history')
 def history():
-    data = requests.get('http://127.0.0.1:5001/history')
-    print(data)
-    return data
+    data = requests.get('http://127.0.0.1:5001/history').json()
+    return jsonify(data)
 
 @app.route('/average')
 def average():
-    data = requests.get('http://127.0.0.1:5001/average')
-    return data
+    data = requests.get('http://127.0.0.1:5001/average').json()
+    return jsonify(data)
 
 @app.route('/dealer/endpos')
 def dealerEndPositions():
-    data = requests.get('http://127.0.0.1:5001/dealer/endpos')
-    return data
+    data = requests.get('http://127.0.0.1:5001/dealer/endpos').json()
+    return jsonify(data)
 
 @app.route('/dealer/realized_pl')
 def dealerRealizedPL():
-    data = requests.get('http://127.0.0.1:5001/dealer/realized_pl')
-    return data
+    data = requests.get('http://127.0.0.1:5001/dealer/realized_pl').json()
+    return jsonify(data)
 
 
 @app.route('/dealer/effective_pl')
 def dealerEffectivePL():
-    return effectivePL()
+    data = requests.get('http://127.0.0.1:5001/dealer/effective_pl').json()
+    return jsonify(data)
 
 @app.route('/deals')
 def forwardStream():
@@ -53,8 +52,8 @@ def forwardStream():
 
 @app.route('/client/testservice')
 def client_to_server():
-    r = requests.get('http://localhost:8080/testservice')
-    return Response(r.iter_lines(chunk_size=1), mimetype="text/json")
+    data = requests.get('http://127.0.0.1:5001/client/testservice').json()
+    return jsonify(data)
 
 
 
