@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Row, Navbar, Nav, Button, Spinner, Jumbotron } from "react-bootstrap";
+import { Navbar, Nav, Button, Spinner, Jumbotron } from "react-bootstrap";
 import { default as Login } from '../login';
 import "./styles.css";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { loggedIn, serverActive } from "../../store/actions";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Router, Link } from "@reach/router";
 import Logo from "../../static/logo.png";
 import {default as AvgTable} from "../average"
 import {default as ClientTable} from "../client"
 import {default as Dealer} from "../dealer"
 import {default as DataStream} from "../history"
+import {default as LoadingScreen} from "../../components/index";
 
 
 const LaunchPage = (props) => {
@@ -19,6 +19,8 @@ const LaunchPage = (props) => {
     const { loggedIn, action, serverActive } = props;
 
     const [userLogin, setUserLogin] = useState(false);
+
+    const [wait, setWait] = useState(false);
 
     const [navBar, setNavBar] = useState('1')
 
@@ -44,7 +46,7 @@ const LaunchPage = (props) => {
 
     }, [loggedIn]);
 
-    return (
+    return wait ? (
 
         <div>
             <Navbar bg="dark" variant="dark">
@@ -79,7 +81,7 @@ const LaunchPage = (props) => {
             navBar == '4' ? <Dealer /> :
             navBar == "5" ? <ClientTable /> : null : <Login />}
         </div>
-    );
+    ) : <LoadingScreen />;
 };
 
 
