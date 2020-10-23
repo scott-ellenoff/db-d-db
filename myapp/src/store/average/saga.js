@@ -1,19 +1,17 @@
 import { takeLatest, call, put } from "redux-saga/effects";
-import { LOGIN, LOGIN_ASYNC } from "./action-types";
+import { GET_AVERAGE, GET_AVERAGE_ASYNC } from "./action-types";
 import { fetchService } from "../../utils";
-import { login } from "../../utils/path";
+import { average } from "../../utils/path";
 
-function* loginAsync(action) {
+function* getAverageAsync(action) {
   try {
-    const user_id = localStorage.getItem('user_id')
-    const path = `${login}/${user_id}`
-    const response = yield call(fetchService, path, "POST", action.payload);
+    const response = yield call(fetchService, average, "GET", action.payload);
     const payloadObject = {
       result: response.result,
       error: null,
     };
     yield put({
-      type: LOGIN_ASYNC,
+      type: GET_AVERAGE_ASYNC,
       payload: payloadObject,
     });
   } catch (error) {
@@ -23,12 +21,12 @@ function* loginAsync(action) {
       };
 
       yield put({
-        type: LOGIN_ASYNC,
+        type: GET_AVERAGE_ASYNC,
         payload: payloadObject,
       });
   }
 }
 
-export function* watchLoginAsync() {
-  yield takeLatest(LOGIN, loginAsync);
+export function* watchAverageAsync() {
+  yield takeLatest(GET_AVERAGE, getAverageAsync);
 }

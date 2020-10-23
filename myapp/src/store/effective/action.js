@@ -1,7 +1,7 @@
-import {LOGIN} from './action-types'
-export const login = (credentials) => {
+import {GET_EFFECTIVE} from './action-types'
+export const getEffective = (credentials) => {
     return {
-        type: LOGIN,
+        type: GET_EFFECTIVE,
         payload: credentials
     }
 }

@@ -1,7 +1,7 @@
-import {LOGIN} from './action-types'
-export const login = (credentials) => {
+import {GET_AVERAGE} from './action-types'
+export const getAverage = (credentials) => {
     return {
-        type: LOGIN,
+        type: GET_AVERAGE,
         payload: credentials
     }
 }

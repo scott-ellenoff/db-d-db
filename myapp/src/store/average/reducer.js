@@ -1,4 +1,4 @@
-import { LOGIN_ASYNC } from "./action-types";
+import { GET_AVERAGE_ASYNC } from "./action-types";
 
 const initialState = {
   result: null,
@@ -7,7 +7,7 @@ const initialState = {
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
-    case LOGIN_ASYNC:
+    case GET_AVERAGE_ASYNC:
       return { ...state, ...payload };
 
     default:
