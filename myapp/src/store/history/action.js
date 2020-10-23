@@ -1,7 +1,8 @@
 import {GET_HISTORY} from './action-types'
 export const getHistory = (credentials) => {
+    console.log('hello')
     return {
-        type: getHistory,
+        type: GET_HISTORY,
         payload: credentials
     }
 }

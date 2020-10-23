@@ -52,6 +52,12 @@ const LaunchPage = (props) => {
 
     }, [loggedIn]);
 
+    useEffect(() => {
+       if (serverActive.result == null) action.serverActive()
+    }, [action])
+
+    console.log(props.serverActive.result)
+
     return wait ? (
 
         <div>
@@ -68,6 +74,8 @@ const LaunchPage = (props) => {
                     <Nav.Link ref={navBar == '5' ? activeEl : null}  eventKey={5}>Client</Nav.Link>
                     <button className={"_sign-out-button"} onClick={()=>signOut()}>Sign Out</button>
                 </Nav> : <Nav className="mr-auto">
+                {serverActive.result == undefined ? 
+                <Nav.Link styles={{'marginTop': '10px'}}><span>Server is Running!</span></Nav.Link > : null}
                         <Nav.Link ><Button variant="dark" disabled>
                             <Spinner
                                 as="span"
@@ -103,24 +111,8 @@ const Success = () => (
     </div>
 )
 
-// const SuccesPop = () => (
-//     <div
-//     className={`justify-content-md-center ${
-//       showSuccess ? "_show-success" : "_no-show-success"
-//     }`}
-//   >
-//     <p
-//       className={`justify-content-md-center ${
-//         showSuccess ? "_show-alert-text" : "_no-show-alert-text"
-//       }`}
-//     >
-//       {registration.result !== null ? registration.result : null}
-//     </p>
-//   </div>
-// );
 
-
-const mapStateToProps = ({ loggedIn }) => {
+const mapStateToProps = ({ loggedIn, serverActive,getHistory }) => {
     return {
         loggedIn,
         serverActive,

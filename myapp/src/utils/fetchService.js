@@ -12,6 +12,8 @@ export default function* (url, method='GET', data=null) {
 
   const response = yield call(axios, objectRequest)
 
+  console.log(response)
+
   const responseBody = response.data
 
   return responseBody
