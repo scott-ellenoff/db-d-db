@@ -35,7 +35,7 @@ def history():
 
 @app.route("/average")
 def average():
-    return groupby_instrument(connect())
+    return groupby_instrument()
 
 
 @app.route("/dealer/endpos")
